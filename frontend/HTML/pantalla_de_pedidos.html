@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Pedidos</title>
+</head>
+
+<body>
+    <div id="contenedor">
+
+        <aside id="sidebar">
+            <h2>ADMIN</h2>
+            <nav>
+                <ul>
+                    <li><a href="#">Inicio</a></li>
+                    <li><a href="#">Pedidos</a></li>
+                    <li><a href="#">Productos</a></li>
+                    <li><a href="#">Historial</a></li>
+                    <li><a href="#">Cerrar sesión</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <main id="contenido">
+            <header>
+                <h1>Gestión de Pedidos</h1>
+                <div id="filtro-fecha">
+                    <label for="fecha-entrega">
+                        Buscar por fecha de entrega:
+                    </label>
+                    <input type="date" id="fecha-entrega" name="fecha-entrega">
+                </div>
+            </header>
+            <section id="tabla-pedidos">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>CLIENTE</th>
+                            <th>ENTREGA</th>
+                            <th>RECOGIDA</th>
+                            <th>HORARIO</th>
+                            <th>DIRECCIÓN</th>
+                            <th>TOTAL</th>
+                            <th>ESTADO</th>
+                            <th>ACCIONES</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+</body>
+
+</html>
