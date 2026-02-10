@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin</title>
+</head>
+<body>
+
+    <!-- CONTENEDOR GENERAL -->
+    <div id="layout">
+
+        <!-- SIDEBAR -->
+        <aside id="botones_dashboard_admin">
+            <h2>ADMIN</h2>
+            <nav>
+                <ul>
+                    <li><a href="#">Inicio</a></li>
+                    <li><a href="#">Pedidos</a></li>
+                    <li><a href="#">Productos</a></li>
+                    <li><a href="#">Historial</a></li>
+                    <li><a href="#">Cerrar sesión</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main id="contenido">
+
+            <h2>Panel del administrador</h2>
+
+            <!-- CARDS -->
+            <div class="cards">
+                <div class="card pendientes-entrega">
+                    <h3>Pendientes de entrega</h3>
+                    <span class="numero">
+                        <!-- número desde PHP -->
+                    </span>
+                </div>
+
+                <div class="card pendientes-recogida">
+                    <h3>Pendientes de recogida</h3>
+                    <span class="numero">
+                        <!-- número desde PHP -->
+                    </span>
+                </div>
+            </div>
+
+            <!-- TABLA -->
+            <section id="tabla-pedidos">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>CLIENTE</th>
+                            <th>ENTREGA</th>
+                            <th>RECOGIDA</th>
+                            <th>HORARIO</th>
+                            <th>DIRECCIÓN</th>
+                            <th>TOTAL</th>
+                            <th>ESTADO</th>
+                            <th>ACCIONES</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- filas dinámicas con PHP -->
+                    </tbody>
+                </table>
+            </section>
+
+        </main>
+
+    </div>
+
+</body>
+</html>
