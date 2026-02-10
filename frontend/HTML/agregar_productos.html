@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Agregar Nuevo Producto</title>
+</head>
+
+<body>
+    <div id="contenedor">
+        <aside id="sidebar">
+            <h2>ADMIN</h2>
+            <nav>
+                <ul>
+                    <li><a href="#">Inicio</a></li>
+                    <li><a href="#">Pedidos</a></li>
+                    <li><a href="#">Productos</a></li>
+                    <li><a href="#">Historial</a></li>
+                    <li><a href="#">Cerrar sesión</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <main id="contenido">
+            <header>
+                <h1>Agregar Nuevo Producto</h1>
+            </header>
+            <section id="formulario-producto">
+
+                <form method="post" enctype="multipart/form-data">
+                    <div class="campo">
+                        <label for="nombre">Nombre del producto</label>
+                        <input type="text" id="nombre" name="nombre" placeholder="Ej. Silla plegable">
+                    </div>
+                    <div class="campo">
+                        <label for="descripcion">Descripción</label>
+                        <textarea id="descripcion" name="descripcion" placeholder="Descripción del producto"></textarea>
+                    </div>
+                    <div class="campo">
+                        <label for="precio">
+                            Precio de renta por día ($)
+                        </label>
+                        <input type="number" id="precio" name="precio">
+                    </div>
+                    <div class="campo">
+                        <label for="stock">Nuevo Stock</label>
+                        <input type="number" id="stock" name="stock">
+                    </div>
+                    <div class="campo">
+                        <label for="imagen">
+                            Imagen del producto
+                        </label>
+                        <input type="file" id="imagen" name="imagen">
+                    </div>
+                    <div class="acciones-formulario">
+                        <button type="submit">
+                            Guardar producto
+                        </button>
+                        <button type="button">
+                            Cancelar
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </main>
+    </div>
+</body>
+
+</html>
