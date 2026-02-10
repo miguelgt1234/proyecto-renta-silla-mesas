@@ -1,0 +1,59 @@
+/* 1. Reset básico y Layout */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #d6d0c7; 
+}
+#layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* 2. Estilos del Sidebar */
+#botones_historial_pedidos_admin {
+    width: 10%;
+    background-color: #6c5048; 
+    color: white;
+    padding: 20px 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+#botones_historial_pedidos_admin h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 1.5rem;
+}
+
+/* 3. Quitar puntos de la lista y márgenes */
+#botones_historial_pedidos_admin ul {
+    list-style: none; /* Quita los puntitos */
+    padding: 0;       /* Quita el espacio interno por defecto de la lista */
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;        /* Espacio entre cada botón */
+    height: 100%;
+}
+
+/* 4. Estilo de los botones (enlaces) */
+#botones_historial_pedidos_admin li a {
+    display: block;   /* Hace que el enlace ocupe todo el ancho */
+    background-color: #795548; /* Café claro */
+    color: white;
+    text-decoration: none;
+    padding: 12px 15px; /* Aquí el padding da el grosor al botón */
+    border-radius: 8px;  /* Bordes redondeados */
+    font-size: 0.9rem;
+    transition: background 0.3s;
+}
+
+#botones_historial_pedidos_admin li a:hover {
+    background-color: #8d6e63;
+}
+
+/* Empujar "Cerrar sesión" al fondo si lo deseas */
+#botones_historial_pedidos_admin li:last-child {
+    margin-top: auto; 
+    padding-bottom: 20px;
+}
