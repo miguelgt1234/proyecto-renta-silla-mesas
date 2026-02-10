@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion de Productos</title>
+    <title>historial de pedidos administrador</title>
 </head>
 <body>
         <!-- CONTENEDOR GENERAL -->
     <div id="layout">
 
         <!-- SIDEBAR -->
-        <aside id="botones_gestion_producto_admin">
+        <aside id="botones_historial_pedidos_admin">
             <h2>ADMIN</h2>
             <nav>
                 <ul>
@@ -26,24 +26,21 @@
         <!-- CONTENIDO PRINCIPAL -->
         <main id="contenido">
 
-            <h2>Gestión de Productos</h2>
-
-            <!-- boton de nuevo producto -->
-            <a href="agregar_productos.html"class="btn btn-nuevo">+</a>
+            <h2>Historial de Pedidos</h2>
 
             <!-- TABLA -->
             <section id="tabla-pedidos">
                 <table>
                     <thead>
                         <tr>
-                            <th>IMAGEN</th>
-                            <th>NOMBRE</th>
-                            <th>DESCRIPCION</th>
-                            <th>PRECIO POR DIA</th>
-                            <th>STOCK TOTAL</th>
-                            <th>STOCK EN USO</th>
-                            <th>ESTOCK DISPONIBLE</th>
-                            <th>ACCIONES</th>
+                            <th>ID PEDIDO</th>
+                            <th>CLIENTE</th>
+                            <th>DIRECCION</th>
+                            <th>PRODUCTO</th>
+                            <th>FECHA INICIO</th>
+                            <th>FECHA FIN</th>
+                            <th>TOTAL</th>
+                            <th>ESTADO</th>
                         </tr>
                     </thead>
                     <tbody>
