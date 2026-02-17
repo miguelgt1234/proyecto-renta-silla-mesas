@@ -1,9 +1,10 @@
-/* 1. Reset básico y Layout */
+/* 1. Reset y Layout */
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #d6d0c7; 
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: #d6d0c7; /* Color de fondo general (Imagen 2) */
 }
+
 #layout {
     display: flex;
     min-height: 100vh;
@@ -11,49 +12,103 @@ body {
 
 /* 2. Estilos del Sidebar */
 #botones_historial_pedidos_admin {
-    width: 10%;
-    background-color: #6c5048; 
-    color: white;
-    padding: 20px 15px;
+    width: 200px;
+    background-color: #68483e; /* Café oscuro profundo (Imagen 1) */
+    color: #f2eee8;
+    padding: 25px 15px;
     display: flex;
     flex-direction: column;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
 }
 
 #botones_historial_pedidos_admin h2 {
     text-align: center;
-    margin-bottom: 30px;
-    font-size: 1.5rem;
+    margin-bottom: 40px;
+    color: #f2eee8;
+    letter-spacing: 2px;
 }
 
-/* 3. Quitar puntos de la lista y márgenes */
+/* 3. Navegación y Botones */
 #botones_historial_pedidos_admin ul {
-    list-style: none; /* Quita los puntitos */
-    padding: 0;       /* Quita el espacio interno por defecto de la lista */
+    list-style: none;
+    padding: 0;
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 12px;        /* Espacio entre cada botón */
+    gap: 15px;
     height: 100%;
 }
 
-/* 4. Estilo de los botones (enlaces) */
 #botones_historial_pedidos_admin li a {
-    display: block;   /* Hace que el enlace ocupe todo el ancho */
-    background-color: #795548; /* Café claro */
-    color: white;
+    display: block;
+    background-color: #6c5048; /* Café medio para botones (Imagen 4) */
+    color: #f2eee8;
     text-decoration: none;
-    padding: 12px 15px; /* Aquí el padding da el grosor al botón */
-    border-radius: 8px;  /* Bordes redondeados */
-    font-size: 0.9rem;
-    transition: background 0.3s;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    transition: all 0.3s ease;
 }
 
+/* Hover: Invertimos un poco los tonos para que resalte */
 #botones_historial_pedidos_admin li a:hover {
-    background-color: #8d6e63;
+    background-color: #f2eee8; /* Fondo claro al pasar el mouse */
+    color: #68483e;           /* Texto oscuro al pasar el mouse */
+    transform: translateX(5px); /* Efecto sutil de movimiento */
 }
 
-/* Empujar "Cerrar sesión" al fondo si lo deseas */
+/* Empujar "Cerrar sesión" al final */
 #botones_historial_pedidos_admin li:last-child {
-    margin-top: auto; 
-    padding-bottom: 20px;
+    margin-top: auto;
+    margin-bottom: 10px;
 }
+
+/* 4. Contenido Principal y Tabla */
+#contenido {
+    flex-grow: 1;
+    padding: 60px;
+}
+
+#contenido h2 {
+    color: #68483e;
+    margin-bottom: 30px;
+}
+
+#tabla-pedidos {
+    background-color: rgba(242, 238, 232, 0.5); /* Variación de #f2eee8 con transparencia */
+    padding: 30px;
+    border-radius: 25px;
+    border: 1px solid #6c504822;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: #f2eee8; /* Fondo de la tabla (Imagen 3) */
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+thead tr {
+    background-color: #68483e;
+    color: #f2eee8;
+}
+
+th {
+    padding: 18px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+td {
+    padding: 15px;
+    text-align: center;
+    color: #68483e;
+    border-bottom: 1px solid #d6d0c7;
+}
+
+/* Colores de los estados */
+.finalizado { color: #2d5a27; font-weight: bold; }
+.cancelado { color: #a52a2a; font-weight: bold; }
