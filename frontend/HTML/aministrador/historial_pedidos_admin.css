@@ -2,7 +2,7 @@
 body {
     margin: 0;
     font-family: 'Segoe UI', Arial, sans-serif;
-    background-color: #d6d0c7; /* Color de fondo general (Imagen 2) */
+    background-color: #d6d0c7; /* Color de fondo general crema */
 }
 
 #layout {
@@ -13,7 +13,7 @@ body {
 /* 2. Estilos del Sidebar */
 #botones_historial_pedidos_admin {
     width: 200px;
-    background-color: #68483e; /* Café oscuro profundo (Imagen 1) */
+    background-color: #68483e; /* Café oscuro profundo */
     color: #f2eee8;
     padding: 25px 15px;
     display: flex;
@@ -28,7 +28,6 @@ body {
     letter-spacing: 2px;
 }
 
-/* 3. Navegación y Botones */
 #botones_historial_pedidos_admin ul {
     list-style: none;
     padding: 0;
@@ -41,7 +40,7 @@ body {
 
 #botones_historial_pedidos_admin li a {
     display: block;
-    background-color: #6c5048; /* Café medio para botones (Imagen 4) */
+    background-color: #6c5048; /* Café medio para botones */
     color: #f2eee8;
     text-decoration: none;
     padding: 12px 20px;
@@ -50,31 +49,26 @@ body {
     transition: all 0.3s ease;
 }
 
-/* Hover: Invertimos un poco los tonos para que resalte */
 #botones_historial_pedidos_admin li a:hover {
-    background-color: #f2eee8; /* Fondo claro al pasar el mouse */
-    color: #68483e;           /* Texto oscuro al pasar el mouse */
-    transform: translateX(5px); /* Efecto sutil de movimiento */
+    background-color: #f2eee8;
+    color: #68483e;
+    transform: translateX(5px);
 }
 
-/* Empujar "Cerrar sesión" al final */
-#botones_historial_pedidos_admin li:last-child {
-    margin-top: auto;
-    margin-bottom: 10px;
-}
-
-/* 4. Contenido Principal y Tabla */
+/* 3. Contenido Principal */
 #contenido {
     flex-grow: 1;
     padding: 60px;
 }
 
 #contenido h2 {
-    color: #68483e;
+    color: #68483e; /* */
     margin-bottom: 30px;
+    font-weight: bold;
 }
 
-#tabla-pedidos {
+/* 4. SECCIÓN CORREGIDA (ID COINCIDENTE) */
+#tabla-historial-pedidos {
     background-color: rgba(242, 238, 232, 0.5); /* Variación de #f2eee8 con transparencia */
     padding: 30px;
     border-radius: 25px;
@@ -85,10 +79,9 @@ table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
-    background-color: #f2eee8; /* Fondo de la tabla (Imagen 3) */
+    background-color: #f2eee8;
     border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
 }
 
 thead tr {
@@ -99,7 +92,8 @@ thead tr {
 th {
     padding: 18px;
     font-size: 12px;
-    font-weight: 600;
+    font-weight: bold;
+    text-transform: uppercase;
 }
 
 td {
@@ -109,6 +103,6 @@ td {
     border-bottom: 1px solid #d6d0c7;
 }
 
-/* Colores de los estados */
+/* Colores de los estados para el historial */
 .finalizado { color: #2d5a27; font-weight: bold; }
 .cancelado { color: #a52a2a; font-weight: bold; }

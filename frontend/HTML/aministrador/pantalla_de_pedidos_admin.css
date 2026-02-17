@@ -1,0 +1,143 @@
+/* 1. Reset y Layout */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: #d6d0c7; /* Color de fondo general (Imagen 2) */
+}
+
+#contenedor {
+    display: flex;
+    min-height: 100vh;
+    align-items: stretch;
+}
+
+#sidebar {
+    width: 200px;
+    background-color: #68483e; /* Café oscuro profundo (Imagen 1) */
+    color: #f2eee8;
+    padding: 25px 15px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+}
+
+#sidebar h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    color: #f2eee8;
+    letter-spacing: 2px;
+}
+
+#sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    height: 100%;
+}
+
+#sidebar li a {
+    display: block;
+    background-color: #6c5048; /* Café medio para botones (Imagen 4) */
+    color: #f2eee8;
+    text-decoration: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+/* Hover: Invertimos un poco los tonos para que resalte */
+#sidebar li a:hover {
+    background-color: #f2eee8; /* Fondo claro al pasar el mouse */
+    color: #68483e;           /* Texto oscuro al pasar el mouse */
+    transform: translateX(5px); /* Efecto sutil de movimiento */
+}
+
+#contenido {
+    flex-grow: 1;
+    padding: 60px;
+    
+}
+
+#contenido h1 {
+    color: #68483e;
+    margin-bottom: 30px;
+}
+
+#tabla-pedidos {
+    background-color: rgba(242, 238, 232, 0.5); /* Variación de #f2eee8 con transparencia */
+    padding: 30px;
+    border-radius: 25px;
+    border: 1px solid #6c504822;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: #f2eee8; /* Fondo de la tabla (Imagen 3) */
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+thead tr {
+    background-color: #68483e;
+    color: #f2eee8;
+}
+
+th {
+    padding: 18px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+td {
+    padding: 15px;
+    text-align: center;
+    color: #68483e;
+    border-bottom: 1px solid #d6d0c7;
+}
+
+label {
+    color: #68483e;
+    font-size: 15px;
+    font-weight: bold;
+    
+}
+
+#fecha-entrega {
+    margin-bottom: 20px;
+}
+
+/* Estilo base para todos los estados */
+.estado {
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 12px;
+    color: white; /* Texto blanco para que resalte */
+    display: inline-block;
+}
+
+/* Colores específicos según el estado */
+.pendiente {
+    background-color: #c68642; /* El tono naranja/miel de tus fotos */
+}
+
+.entregado {
+    background-color: #5db075; /* Verde suave de la imagen */
+}
+
+.finalizado {
+    color: #2d5a27; /* Verde oscuro (texto) para la tabla de historial */
+    background: none;
+}
+
+.cancelado {
+    color: #a52a2a; /* Rojo oscuro (texto) para la tabla de historial */
+    background: none;
+}
