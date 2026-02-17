@@ -105,4 +105,11 @@ td {
     background-color: #6c5048; /* Café medio para botones */
     color: #f2eee8;
     text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
 }
+
+.editar { color: #4ab5f3; font-weight: bold; }
+.eliminar { color: #a52a2a; font-weight: bold; }
+
