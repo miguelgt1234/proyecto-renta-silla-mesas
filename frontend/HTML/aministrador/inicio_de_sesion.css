@@ -1,0 +1,103 @@
+/* 1. Reset Básico y Layout General */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #d6d0c7; /* Color crema de fondo */
+}
+
+main {
+    display: flex;
+    width: 90%;
+    max-width: 1000px;
+    height: 80vh;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* 2. Lado Izquierdo - EFECTO DE ONDAS FORZADO */
+#lado-izquierdo {
+    flex: 1;
+    position: relative;
+    /* Color base naranja */
+    background-color: #c68642; 
+
+    /* Definimos las ondas con colores explícitos para asegurar visibilidad */
+    background-image: 
+        radial-gradient(ellipse 150% 50% at 50% 15%, #d2965a 20%, transparent 80%),
+        radial-gradient(ellipse 150% 50% at 50% 45%, #b57635 20%, transparent 80%),
+        radial-gradient(ellipse 150% 50% at 50% 75%, #d2965a 20%, transparent 80%),
+        radial-gradient(ellipse 150% 50% at 50% 105%, #b57635 20%, transparent 80%);
+}
+
+/* 3. Lado Derecho - Formulario */
+#lado-derecho {
+    flex: 1;
+    background-color: #f2eee8; /* Crema claro */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+}
+
+/* Logo corregido según tu explorador de archivos */
+#lado-derecho .logo-icon {
+    width: 140px; 
+    height: 120px;
+    background-image: url('../../img/LogoMesaSillaCafe.png'); 
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-bottom: 20px;
+}
+
+#lado-derecho h1 {
+    color: #68483e; /* Café oscuro */
+    font-size: 1.6rem;
+    letter-spacing: 2px;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+}
+
+#lado-derecho form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 80%;
+    max-width: 320px;
+}
+
+input {
+    padding: 14px 18px;
+    border-radius: 10px;
+    border: 1px solid #d6d0c7;
+    background-color: #fcfaf8;
+    font-size: 1rem;
+    color: #68483e;
+    outline: none;
+}
+
+input:focus {
+    border-color: #c68642;
+}
+
+#btn_ingresar {
+    background-color: #68483e; /* */
+    color: white;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+#btn_ingresar:hover {
+    background-color: #5a3a2e;
+}
