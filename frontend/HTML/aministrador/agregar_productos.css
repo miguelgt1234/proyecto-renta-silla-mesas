@@ -1,0 +1,148 @@
+/* 1. Reset y Layout */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: #d6d0c7; /* Fondo general crema */
+}
+
+#contenedor {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* 2. Sidebar (Café Oscuro) */
+#sidebar {
+    width: 200px;
+    background-color: #68483e; /* Café oscuro profundo (Imagen 1) */
+    color: #f2eee8;
+    padding: 25px 15px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+}
+
+#sidebar h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    color: #f2eee8;
+    letter-spacing: 2px;
+}
+
+#sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    height: 100%;
+}
+
+#sidebar li a {
+    display: block;
+    background-color: #6c5048; /* Café medio para botones (Imagen 4) */
+    color: #f2eee8;
+    text-decoration: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+#sidebar li a:hover {
+    background-color: #f2eee8; /* Fondo claro al pasar el mouse */
+    color: #68483e;           /* Texto oscuro al pasar el mouse */
+    transform: translateX(5px); /* Efecto sutil de movimiento */
+}
+
+#sidebar li:last-child {
+    margin-top: auto;
+    margin-bottom: 10px;
+}
+
+
+/* 3. Contenido Principal */
+#contenido {
+    flex-grow: 1;
+    padding: 40px 60px;
+}
+
+#contenido h1 {
+    color: #68483e;
+    margin-bottom: 30px;
+}
+
+/* 4. Tarjeta del Formulario (Gris cálido/claro) */
+#formulario-producto {
+    background-color: #e3dad5; 
+    padding: 40px;
+    border-radius: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    max-width: 700px;
+}
+
+/* 5. Acomodo de los Campos (Crucial para que no se amontonen) */
+.campo {
+    display: flex;
+    flex-direction: column; /* Etiqueta arriba, input abajo */
+    gap: 8px;               /* Espacio sutil entre etiqueta e input */
+    margin-bottom: 20px;    /* Espacio entre bloques de campos */
+}
+
+.campo label {
+    color: #3b241c;
+    font-weight: 600;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* 6. Inputs y Textarea (Fondo claro guardado) */
+input[type="text"],
+input[type="number"],
+textarea,
+input[type="file"] {
+    background-color: #f2eee8; /* Tono claro de tus fotos */
+    border: 1px solid #c9c0b7;
+    padding: 12px 15px;
+    border-radius: 10px;
+    font-size: 14px;
+    color: #3b241c;
+    width: 100%;            /* Para que ocupen todo el ancho de la tarjeta */
+    box-sizing: border-box; /* Para que el padding no rompa el ancho */
+}
+
+textarea {
+    height: 120px;
+    resize: none;
+}
+
+/* 7. Botones de Acción */
+.acciones-formulario {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+button {
+    padding: 12px 25px;
+    border-radius: 10px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+button[type="submit"] {
+    background-color: #6c5048; /* Café botones */
+    color: #f2eee8;
+}
+
+button[type="button"] {
+    background-color: #c62828; /* Rojo cancelar */
+    color: white;
+}
+
+button:hover {
+    transform: scale(1.02);
+}
