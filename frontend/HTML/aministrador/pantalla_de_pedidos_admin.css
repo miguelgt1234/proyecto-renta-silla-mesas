@@ -132,12 +132,12 @@ label {
     background-color: #5db075; /* Verde suave de la imagen */
 }
 
-.finalizado {
-    color: #2d5a27; /* Verde oscuro (texto) para la tabla de historial */
+.cancelar {
+    color: #a52a2a; /* Rojo oscuro (texto) para la tabla de historial */
     background: none;
 }
 
-.cancelado {
-    color: #a52a2a; /* Rojo oscuro (texto) para la tabla de historial */
+.recogido{
+    color: #68483e; /* Rojo oscuro (texto) para la tabla de historial */
     background: none;
 }
