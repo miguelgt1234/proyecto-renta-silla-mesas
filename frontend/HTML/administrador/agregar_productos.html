@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="agregar_productos.css">
+    <title>Agregar Nuevo Producto</title>
+</head>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('success') === '1') {
+        alert("Producto guardado exitosamente");
+    }
+</script>
+
+<body>
+    <div id="contenedor">
+        
+        <aside id="sidebar">
+            <h2>ADMIN</h2>
+            <nav>
+                <ul>
+                    <li><a href="dashboard_admin.html">Inicio</a></li>
+                    <li><a href="pantalla_de_pedidos_admin.html">Pedidos</a></li>
+                    <li><a href="gestion_productos_admin.html">Productos</a></li>
+                    <li><a href="historial_pedidos_admin.html">Historial</a></li>
+                    <li><a href="../../backend/controllers/logout.php">Cerrar sesión</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main id="contenido">
+            <header>
+                <h1>Agregar Nuevo Producto</h1>
+            </header>
+
+            <section id="formulario-producto">
+
+<form action="/proyecto-renta-silla-mesas/backend/controllers/agregar_producto.php"
+      method="post"
+      enctype="multipart/form-data">
+
+                    <!-- NOMBRE -->
+                    <div class="campo">
+                        <label for="nombre">Nombre del producto</label>
+                        <input 
+                            type="text"
+                            id="nombre"
+                            name="nombre"
+                            placeholder="Ej. Silla plegable"
+                            required>
+                    </div>
+
+                    <!-- DESCRIPCIÓN -->
+                    <div class="campo">
+                        <label for="descripcion">Descripción</label>
+                        <textarea 
+                            id="descripcion"
+                            name="descripcion"
+                            placeholder="Descripción del producto"
+                            required>
+                        </textarea>
+                    </div>
+
+                    <!-- PRECIO -->
+                    <div class="campo">
+                        <label for="precio">
+                            Precio de renta por día ($)
+                        </label>
+                        <input 
+                            type="number"
+                            id="precio"
+                            name="precio"
+                            step="0.01"
+                            min="0"
+                            required>
+                    </div>
+
+                    <!-- STOCK -->
+                    <div class="campo">
+                        <label for="stock">Nuevo Stock</label>
+                        <input 
+                            type="number"
+                            id="stock"
+                            name="stock"
+                            min="0"
+                            required>
+                    </div>
+
+                    <!-- CATEGORÍA -->
+                    <div class="campo">
+                        <label for="categoria">Categoría</label>
+                        <select name="categoria" id="categoria" required>
+                            <option value="">Seleccione una categoría</option>
+                            <option value="1">SILLA</option>
+                            <option value="2">MESA</option>
+                        </select>
+                    </div>
+
+                    <!-- IMAGEN -->
+                    <div class="campo">
+                        <label for="imagen">
+                            Imagen del producto
+                        </label>
+                        <input 
+                            type="file"
+                            id="imagen"
+                            name="imagen"
+                            accept="image/*"
+                            required>
+                    </div>
+
+                    <!-- BOTONES -->
+                    <div class="acciones-formulario">
+                        <button type="submit">
+                            Guardar producto
+                        </button>
+
+                        <button 
+                            type="button"
+                            onclick="window.location.href='gestion_productos_admin.html'">
+                            Cancelar
+                        </button>
+                    </div>
+
+                </form>
+
+            </section>
+        </main>
+
+    </div>
+</body>
+
+</html>
