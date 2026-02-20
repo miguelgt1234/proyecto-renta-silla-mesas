@@ -5,24 +5,25 @@ require_once __DIR__ . '/../DAO/ProductoDAO.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    //Capturar datos
-    $nombre = trim($_POST["nombre"]);
-    $descripcion = trim($_POST["descripcion"]);
-    $precio = floatval($_POST["precio"]);
-    $stock = intval($_POST["stock"]);
-    $id_categoria = intval($_POST["categoria"]);
+    // Capturar datos
+    $nombre = trim($_POST["nombre"] ?? '');
+    $descripcion = trim($_POST["descripcion"] ?? '');
+    $precio = floatval($_POST["precio"] ?? 0);
+    $stock = intval($_POST["stock"] ?? 0);
+    $id_categoria = intval($_POST["categoria"] ?? 0);
 
+    // Validación correcta
     if (
-        empty($nombre) ||
-        empty($descripcion) ||
+        $nombre === '' ||
+        $descripcion === '' ||
         $precio < 0 ||
         $stock < 0 ||
-        empty($id_categoria)
+        $id_categoria <= 0
     ) {
         die("Datos inválidos.");
     }
 
-    //Subir imagen
+    // Subir imagen
     $imagenNombre = null;
 
     if (isset($_FILES["imagen"]) && $_FILES["imagen"]["error"] === 0) {
@@ -37,12 +38,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $imagenNombre = time() . "_" . basename($_FILES["imagen"]["name"]);
         $rutaCompleta = $directorio . $imagenNombre;
 
-        move_uploaded_file($_FILES["imagen"]["tmp_name"], $rutaCompleta);
+        if (!move_uploaded_file($_FILES["imagen"]["tmp_name"], $rutaCompleta)) {
+            die("Error al mover la imagen.");
+        }
+
     } else {
         die("Error al subir imagen.");
     }
 
-    //Calcular estado automáticamente
+    // Calcular estado automáticamente
     $estado = ($stock > 0) ? "disponible" : "fuera_stock";
 
     $producto = new Producto(
@@ -51,7 +55,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $precio,
         $stock,
         $imagenNombre,
-        $estado,
         $id_categoria
     );
 
@@ -59,9 +62,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $resultado = $productoDAO->insertar($producto);
 
     if ($resultado) {
-       header("Location: /proyecto-renta-silla-mesas/frontend/HTML/administrador/agregar_productos.html?success=1");
-exit();
+        header("Location: /proyecto-renta-silla-mesas/frontend/HTML/administrador/agregar_productos.html?success=1");
+        exit();
     } else {
-        echo "Error al agregar producto ❌";
+        echo "Error al agregar producto ";
     }
 }
