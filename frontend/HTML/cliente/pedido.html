@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mis Pedidos</title>
+</head>
+<body>
+
+    <div id="contenedorMisPedidos">
+
+        <div id="headerMisPedidos">
+            <h1 id="tituloMisPedidos">Mis Pedidos</h1>
+            <button id="btnVolverCatalogoPedidos" onclick="location.href='catalogo.html'">catalogo</button>
+            <button id="btnPerfil" onclick="location.href='carrito.html'">Carrito</button>
+            <button id="btnMisPedidos" disabled>Mis Pedidos</button>
+            <button id="btnPerfil" onclick="location.href='perfil.html'">Perfil</button>
+        </div>
+
+        <div id="tablaPedidosContainer">
+            <table id="tablaPedidos" border="1">
+
+                <thead id="theadPedidos">
+                    <tr id="filaEncabezado">
+                        <th id="thIdPedido">ID Pedido</th>
+                        <th id="thFechaEntrega">Fecha Entrega</th>
+                        <th id="thFechaFin">Fecha Fin</th>
+                        <th id="thTotal">Total</th>
+                        <th id="thEstado">Estado</th>
+                    </tr>
+                </thead>
+
+                <tbody id="tbodyPedidos">
+                    <tr id="filaPedido_1">
+                        <td id="tdIdPedido_1">1</td>
+                        <td id="tdFechaEntrega_1">2026-02-01</td>
+                        <td id="tdFechaFin_1">2026-02-05</td>
+                        <td id="tdTotal_1">$0.00</td>
+                        <td id="tdEstado_1">Pendiente</td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+
+</body>
+</html>
