@@ -1,61 +1,39 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Carrito</title>
 </head>
+
 <body>
 
     <div id="contenedorCarrito">
 
-        <!-- HEADER -->
         <div id="headerCarrito">
-            <h1 id="tituloCarrito">Carrito de Compras</h1>
-            <button id="btnVolverCatalogo" onclick="location.href='catalogo.html'">catalogo</button>
-            <button id="btnCarrito" disabled>Carrito</button>    
-            <button id="btnMisPedidos" onclick="location.href='pedido.html'">Mis Pedidos</button>
-            <button id="btnPerfil" onclick="location.href='perfil.html'">Perfil</button>
+
+            <h1>Carrito</h1>
+
+            <button onclick="location.href='catalogo.html'">Catálogo</button>
+            <button disabled>Carrito</button>
+            <button onclick="location.href='pedidos.html'">Mis pedidos</button>
+            <button onclick="location.href='perfil.html'">Perfil</button>
+
         </div>
 
-        <!-- LISTA DE PRODUCTOS EN CARRITO -->
+        <!-- LISTA DINÁMICA -->
         <div id="listaCarrito">
-
-            <!-- PRODUCTO EN CARRITO -->
-            <div id="productoCarrito_1">
-
-                <p id="nombreCarrito_1">Nombre Producto</p>
-                <p id="precioCarrito_1">$0.00</p>
-
-                <div id="cantidadContainer_1">
-                    <label id="labelCantidad_1">Cantidad:</label>
-                    <input id="inputCantidad_1" type="number" min="1">
-                </div>
-
-            </div>
-
+            <!-- Productos del carrito cargados desde backend -->
         </div>
 
-        <!-- FECHAS -->
-        <div id="seccionFechas">
-
-            <div id="fechaEntregaContainer">
-                <label id="labelFechaEntrega">Fecha de Entrega:</label>
-                <input id="inputFechaEntrega" type="date">
-            </div>
-
-            <div id="fechaFinContainer">
-                <label id="labelFechaFin">Fecha Fin:</label>
-                <input id="inputFechaFin" type="date">
-            </div>
-
-        </div>
-
-        <!-- BOTÓN CONFIRMAR -->
-        <div id="seccionConfirmarPedido">
-            <button id="btnConfirmarPedido">Confirmar Pedido</button>
+        <div id="accionesCarrito">
+            <button onclick="location.href='confirmar_pedido.html'">
+                Confirmar pedido
+            </button>
         </div>
 
     </div>
 
 </body>
+
 </html>

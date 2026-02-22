@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmar Pedido</title>
+</head>
+
+<body>
+
+    <div id="contenedorConfirmar">
+
+        <div id="headerConfirmar">
+
+            <h1>Confirmar Pedido</h1>
+
+            <button onclick="location.href='catalogo.html'">Catálogo</button>
+            <button onclick="location.href='carrito.html'">Carrito</button>
+            <button onclick="location.href='pedidos.html'">Mis pedidos</button>
+            <button onclick="location.href='perfil.html'">Perfil</button>
+
+        </div>
+
+        <!-- RESUMEN DINÁMICO -->
+        <div id="resumenPedido">
+            <!-- Backend mostrará productos y totales -->
+        </div>
+
+        <form method="post">
+
+            <div>
+                <label for="direccion">Dirección</label>
+                <input type="text" name="direccion" id="direccion" required>
+            </div>
+
+            <div>
+                <label for="fechaEntrega">Fecha de entrega</label>
+                <input type="date" name="fechaEntrega" id="fechaEntrega" required>
+            </div>
+
+            <div>
+                <label for="fechaFin">Fecha fin</label>
+                <input type="date" name="fechaFin" id="fechaFin" required>
+            </div>
+
+            <button type="submit">Confirmar pedido</button>
+
+        </form>
+
+    </div>
+
+</body>
+
+</html>
