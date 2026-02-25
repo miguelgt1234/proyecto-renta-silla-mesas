@@ -1,0 +1,158 @@
+/* 1. BODY - Fondo degradado moderno y centrado perfecto */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+
+    /* 🔥 Degradado elegante café */
+    background: linear-gradient(135deg, #5a3e36, #7b564c, #3e2723);
+
+    display: grid;
+    place-items: center;   /* Centrado perfecto horizontal y vertical */
+
+    min-height: 100vh;
+    padding: 20px;         /* Espacio en pantallas pequeñas */
+}
+
+
+/* 2. Tarjeta de Registro */
+#tarjeta-registro {
+    background-color: #f2eee8;
+    width: 100%;
+    max-width: 850px;
+    padding: 50px;
+    border-radius: 40px;
+
+    /* 🔥 Sombra más elegante */
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.35);
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    animation: aparecer 0.6s ease;
+}
+
+
+/* 3. Animación suave al cargar */
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* 4. Título */
+header h1 {
+    color: #68483e;
+    font-size: 2.2rem;
+    text-align: center;
+    margin: 0 0 15px 0;
+    font-weight: bold;
+}
+
+
+/* 5. Layout de filas (PC) */
+.row {
+    display: flex;
+    gap: 30px;
+    width: 100%;
+}
+
+.input-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+
+/* 6. Labels */
+.input-group label {
+    color: #68483e;
+    font-weight: bold;
+    font-size: 0.9rem;
+    padding-left: 5px;
+}
+
+
+/* 7. Inputs */
+.input-wrapper input {
+    width: 100%;
+    padding: 14px 20px;
+    border: 1px solid #d6d0c7;
+    border-radius: 15px;
+    background-color: #fcfaf8;
+    color: #68483e;
+    box-sizing: border-box;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+/* 🔥 Efecto focus bonito */
+.input-wrapper input:focus {
+    border-color: #68483e;
+    box-shadow: 0 0 0 3px rgba(104, 72, 62, 0.2);
+}
+
+
+/* 8. Botón */
+.btn-registro {
+    width: 100%;
+    background: linear-gradient(135deg, #68483e, #4a2e26);
+    color: white;
+    padding: 18px;
+    border: none;
+    border-radius: 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+}
+
+.btn-registro:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+}
+
+
+/* 9. Link inferior */
+p {
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+p a {
+    color: #68483e;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+p a:hover {
+    text-decoration: underline;
+}
+
+
+/* 10. Responsive */
+@media (max-width: 768px) {
+
+    .row {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    #tarjeta-registro {
+        padding: 30px;
+        border-radius: 25px;
+    }
+
+    header h1 {
+        font-size: 1.8rem;
+    }
+}
