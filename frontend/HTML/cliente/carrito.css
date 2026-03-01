@@ -1,0 +1,92 @@
+/* 1. Reset y Fondo General */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: #d6d0c7; /* Color de fondo general crema */
+}
+
+/* 2. Barra de Navegación (Header) */
+#headerCarrito {
+    background-color: #68483e; /* Café oscuro profundo del catálogo */
+    padding: 15px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #f2eee8;
+}
+
+#headerCarrito h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Botones del Menú Superior */
+.nav-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+#headerCarrito button {
+    background: none;
+    border: none;
+    color: #f2eee8;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 8px 12px;
+    transition: 0.3s;
+}
+
+#headerCarrito button:hover:not(:disabled) {
+    color: #c68642; /* Naranja para resaltar */
+}
+
+#headerCarrito button:disabled {
+    border-bottom: 2px solid #f2eee8; /* Indica página actual */
+    font-weight: bold;
+}
+
+/* 3. Contenedor de la Lista de Productos */
+#listaCarrito {
+    padding: 40px 10%;
+    min-height: 300px;
+}
+
+/* Filas de productos que imitan el estilo de tabla/lista del admin */
+.item-carrito {
+    background-color: #f2eee8; /* Crema claro de las tarjetas */
+    margin-bottom: 10px;
+    padding: 20px;
+    border-radius: 15px; /* Bordes redondeados como las fotos de productos */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #68483e;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+/* 4. Pie de Página (Acciones) */
+#accionesCarrito {
+    padding: 30px 10%;
+    text-align: right;
+    background-color: rgba(104, 72, 62, 0.1); /* Sutil toque café */
+    border-top: 1px solid #d6d0c7;
+}
+
+#accionesCarrito button {
+    background-color: #68483e; /* Café oscuro de los botones "Agregar" */
+    color: white;
+    padding: 15px 40px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#accionesCarrito button:hover {
+    background-color: #c68642; /* Cambia a naranja como acción principal */
+    transform: translateY(-2px);
+}

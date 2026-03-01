@@ -41,4 +41,37 @@ class ProductoDAO {
             return false;
         }
     }
+
+    public function obtenerProductosDisponibles($tipo = null) {
+
+    try {
+
+        $sql = "SELECT p.*, c.nombre AS categoria
+                FROM productos p
+                INNER JOIN categorias c 
+                ON p.id_categoria = c.id_categoria
+                WHERE p.estado = 'disponible'";
+
+        if ($tipo !== null) {
+            $sql .= " AND c.nombre = :tipo";
+        }
+
+        $sql .= " ORDER BY p.precio_renta_dia DESC";
+
+        $stmt = $this->conexion->prepare($sql);
+
+        if ($tipo !== null) {
+            $stmt->bindValue(":tipo", $tipo);
+        }
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    } catch (PDOException $e) {
+        echo "Error al obtener productos: " . $e->getMessage();
+        return [];
+    }
+    }
+
 }

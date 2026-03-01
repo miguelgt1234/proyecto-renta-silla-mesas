@@ -1,0 +1,118 @@
+/* 1. Estructura General */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: #d6d0c7; /* Fondo crema general */
+}
+
+#contenedorConfirmar {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* 2. Header (Barra Superior Café) */
+#headerConfirmar {
+    background-color: #68483e; /* Café oscuro profundo */
+    padding: 15px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#headerConfirmar h1 {
+    color: #f2eee8; /* Crema claro */
+    margin: 0;
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#headerConfirmar button {
+    background: none;
+    border: none;
+    color: #f2eee8;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 8px 15px;
+    transition: 0.3s;
+}
+
+#headerConfirmar button:hover {
+    color: #c68642; /* Naranja en hover */
+}
+
+/* 3. Contenedor de Resumen y Formulario */
+#resumenPedido, form {
+    width: 80%;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 30px;
+    background-color: #f2eee8; /* Fondo de sección */
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+/* Estilos del Resumen (Lo que viene del Backend) */
+#resumenPedido {
+    border-left: 8px solid #c68642; /* Detalle naranja */
+    color: #68483e;
+    display: none;
+}
+
+/* 4. Estilos del Formulario */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+form div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+label {
+    color: #68483e; /* Café oscuro */
+    font-weight: bold;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+input {
+    padding: 12px 15px;
+    border: 2px solid #d6d0c7;
+    border-radius: 10px;
+    background-color: #fcfaf8;
+    font-size: 1rem;
+    color: #68483e;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+input:focus {
+    border-color: #c68642; /* Resalta con naranja al escribir */
+}
+
+/* 5. Botón de Acción Principal (Confirmar) */
+form button[type="submit"] {
+    background-color: #68483e; /* Café sólido */
+    color: white;
+    padding: 18px;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    margin-top: 10px;
+    transition: background 0.3s, transform 0.2s;
+}
+
+form button[type="submit"]:hover {
+    background-color: #c68642; /* Cambia a naranja al confirmar */
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(198, 134, 66, 0.3);
+}
+

@@ -1,0 +1,156 @@
+/* ========================= */
+/* FONDO GENERAL */
+/* ========================= */
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(145deg, #4e342e, #6d4c41, #3e2723);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* ========================= */
+/* HEADER */
+/* ========================= */
+
+#headerPerfil {
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(10px);
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 0 0 25px 25px;
+}
+
+#headerPerfil h1 {
+    color: #f5ebe0;
+    margin: 0;
+    font-size: 1.8rem;
+    letter-spacing: 1px;
+}
+
+#headerPerfil button {
+    background: none;
+    border: none;
+    color: #f5ebe0;
+    font-weight: 500;
+    margin-left: 25px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 0.95rem;
+}
+
+#headerPerfil button:hover {
+    opacity: 0.6;
+}
+
+#headerPerfil button:disabled {
+    opacity: 0.4;
+}
+
+
+/* ========================= */
+/* CONTENEDOR CENTRAL */
+/* ========================= */
+
+#datosPerfil {
+    margin: 80px auto 40px auto;
+    width: 80%;
+    max-width: 850px;
+    padding: 60px 50px;
+    border-radius: 35px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
+    position: relative;
+    text-align: center;
+}
+
+
+/* ========================= */
+/* AVATAR */
+/* ========================= */
+
+.avatarPerfil {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6d4c41, #4e342e);
+    margin: -120px auto 30px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #f5ebe0;
+    font-size: 42px;
+    font-weight: bold;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    border: 5px solid white;
+}
+
+
+/* ========================= */
+/* GRID DE DATOS */
+/* ========================= */
+
+.gridDatos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.datoCard {
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    transition: 0.3s ease;
+}
+
+.datoCard:hover {
+    transform: translateY(-6px);
+}
+
+.labelDato {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #8d6e63;
+    margin-bottom: 10px;
+}
+
+.valorDato {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #4e342e;
+}
+
+
+/* ========================= */
+/* BOTÓN EDITAR */
+/* ========================= */
+
+#accionesPerfil {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+#accionesPerfil button {
+    background: linear-gradient(135deg, #6d4c41, #4e342e);
+    color: white;
+    border: none;
+    padding: 15px 45px;
+    border-radius: 40px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+#accionesPerfil button:hover {
+    transform: translateY(-4px);
+}

@@ -1,0 +1,207 @@
+/* ============================= */
+/* 1. RESET Y FONDO GENERAL */
+/* ============================= */
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    min-height: 100vh;
+
+    background:
+        linear-gradient(135deg, #68483e, #5a3e36),
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.05), transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(0,0,0,0.2), transparent 50%);
+
+    background-blend-mode: overlay;
+}
+
+#contenedorCatalogo {
+    width: 95%;
+    margin: 0 auto;
+    padding-bottom: 40px;
+}
+
+
+/* ============================= */
+/* 2. HEADER SUPERIOR */
+/* ============================= */
+
+#headerCatalogo {
+    background-color: #68483e; /* Café principal */
+    color: #f2eee8;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 30px;
+    border-radius: 0 0 20px 20px;
+}
+
+#tituloCatalogo {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Botones del header */
+#headerCatalogo button {
+    background: none;
+    border: none;
+    color: #f2eee8;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 20px;
+    font-size: 0.95rem;
+    transition: 0.3s;
+}
+
+#headerCatalogo button:hover {
+    opacity: 0.7;
+}
+
+
+/* ============================= */
+/* 3. BIENVENIDA + FILTRO */
+/* ============================= */
+
+#seccionBienvenidaFiltro {
+    background-color: #f2eee8;
+    padding: 30px 40px;
+    border-radius: 20px;
+    margin: 30px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#textoBienvenida {
+    margin: 0;
+    color: #68483e;
+}
+
+#descripcionBienvenida {
+    margin-top: 5px;
+    color: #68483e;
+    font-size: 0.95rem;
+}
+
+/* Filtro */
+
+#formFiltro {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#labelFiltroTipo {
+    color: #68483e;
+    font-weight: bold;
+}
+
+#selectTipoProducto {
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: 1px solid #d6d0c7;
+    background-color: #ffffff;
+}
+
+#btnFiltrar {
+    background-color: #6c5048; /* Café medio */
+    color: #f2eee8;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#btnFiltrar:hover {
+    background-color: #68483e;
+}
+
+
+/* ============================= */
+/* 4. GRID DE PRODUCTOS */
+/* ============================= */
+
+#seccionProductos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+
+/* ============================= */
+/* 5. CARD DE PRODUCTO */
+/* ============================= */
+
+.productoCard {
+    background-color: #f2eee8;
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    transition: 0.3s;
+}
+
+.productoCard:hover {
+    transform: translateY(-4px);
+}
+
+.imagenProducto {
+    height: 160px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.imgProducto {
+    max-height: 140px;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.nombreProducto {
+    margin: 10px 0 5px 0;
+    color: #68483e;
+}
+
+.precioProducto {
+    margin: 0 0 15px 0;
+    color: #68483e;
+    font-size: 0.9rem;
+}
+
+/* Botón agregar */
+.btnAgregar {
+    background-color: #6c5048;
+    color: #f2eee8;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btnAgregar:hover {
+    background-color: #68483e;
+}
+
+
+/* ============================= */
+/* 6. RESPONSIVE */
+/* ============================= */
+
+@media (max-width: 768px) {
+
+    #seccionBienvenidaFiltro {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
+
+    #formFiltro {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
