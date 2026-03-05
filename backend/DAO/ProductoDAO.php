@@ -52,16 +52,16 @@ class ProductoDAO {
                 ON p.id_categoria = c.id_categoria
                 WHERE p.estado = 'disponible'";
 
-        if ($tipo !== null && $tipo !== '') {
-            $sql .= " AND p.id_categoria = :tipo";
+        if ($tipo !== null) {
+            $sql .= " AND c.nombre = :tipo";
         }
 
         $sql .= " ORDER BY p.precio_renta_dia DESC";
 
         $stmt = $this->conexion->prepare($sql);
 
-        if ($tipo !== null && $tipo !== '') {
-            $stmt->bindValue(":tipo", $tipo, PDO::PARAM_INT);
+        if ($tipo !== null) {
+            $stmt->bindValue(":tipo", $tipo);
         }
 
         $stmt->execute();
