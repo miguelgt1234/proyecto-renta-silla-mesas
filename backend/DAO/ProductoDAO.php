@@ -61,7 +61,7 @@ class ProductoDAO {
         $stmt = $this->conexion->prepare($sql);
 
         if ($tipo !== null && $tipo !== '') {
-            $stmt->bindValue(":tipo", $tipo, PDO::PARAM_INT);
+            $stmt->bindValue(":tipo", (int) $tipo, PDO::PARAM_INT);
         }
 
         $stmt->execute();

@@ -1,9 +1,47 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+require_once __DIR__ . '/auth.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['accion'] ?? '') === 'agregar_carrito') {
+    if (!usuario_autenticado()) {
+        header('Location: inicio_de_sesion.php?redirect=' . urlencode('catalogo.php'));
+        exit;
+    }
+
+    $idProducto = (int) ($_POST['id_producto'] ?? 0);
+    $cantidad = max(1, (int) ($_POST['cantidad'] ?? 1));
+
+    if ($idProducto > 0) {
+        $carrito = obtener_carrito();
+        $actual = $carrito[$idProducto] ?? 0;
+
+        $stockProducto = 0;
+        foreach ($productos as $productoItem) {
+            if ((int) $productoItem['id_producto'] === $idProducto) {
+                $stockProducto = (int) $productoItem['stock_total'];
+                break;
+            }
+        }
+
+        if ($stockProducto > 0) {
+            $carrito[$idProducto] = min($stockProducto, $actual + $cantidad);
+            guardar_carrito($carrito);
+            $_SESSION['mensaje_carrito'] = 'producto agregado al carrito';
+        }
+    }
+
+    $redireccion = 'catalogo.php';
+    if (!empty($_GET['tipo'])) {
+        $redireccion .= '?tipo=' . urlencode($_GET['tipo']);
+    }
+
+    header('Location: ' . $redireccion);
+    exit;
 }
-$clienteAutenticado = isset($_SESSION['cliente']);
+
+$mensajeCarrito = $_SESSION['mensaje_carrito'] ?? '';
+unset($_SESSION['mensaje_carrito']);
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -12,7 +50,9 @@ $clienteAutenticado = isset($_SESSION['cliente']);
     <title>Catálogo</title>
 </head>
 <body>
+
     <div id="contenedorCatalogo">
+
         <div id="headerCatalogo">
             <h1 id="tituloCatalogo">Catálogo de Productos</h1>
             <button id="btnCatalogo" disabled>Catálogo</button>
@@ -29,7 +69,12 @@ $clienteAutenticado = isset($_SESSION['cliente']);
         <div id="seccionBienvenidaFiltro">
             <div id="contenedorBienvenida">
                 <h2 id="textoBienvenida">Bienvenido Cliente</h2>
-                <p id="descripcionBienvenida">Explora nuestro catálogo y renta mesas y sillas para tu evento.</p>
+                <p id="descripcionBienvenida">
+                    Explora nuestro catálogo y renta mesas y sillas para tu evento.
+                </p>
+                <?php if ($mensajeCarrito): ?>
+                    <p><?= htmlspecialchars($mensajeCarrito) ?></p>
+                <?php endif; ?>
             </div>
 
             <div id="contenedorFiltro">
@@ -38,7 +83,10 @@ $clienteAutenticado = isset($_SESSION['cliente']);
                     <select id="selectTipoProducto" name="tipo">
                         <option value="">Todos</option>
                         <?php foreach ($categorias as $categoria): ?>
-                            <option value="<?= $categoria['id_categoria'] ?>" <?= ($tipoSeleccionado == $categoria['id_categoria']) ? 'selected' : '' ?>>
+                            <option
+                                value="<?= $categoria['id_categoria'] ?>"
+                                <?= ((string) $tipoSeleccionado === (string) $categoria['id_categoria']) ? 'selected' : '' ?>
+                            >
                                 <?= htmlspecialchars($categoria['nombre']) ?>
                             </option>
                         <?php endforeach; ?>
@@ -55,20 +103,20 @@ $clienteAutenticado = isset($_SESSION['cliente']);
                         <div class="imagenProducto">
                             <img class="imgProducto" src="/proyecto-renta-silla-mesas/backend/uploads/<?= htmlspecialchars($producto['imagen']) ?>" alt="Imagen del producto">
                         </div>
+
                         <div class="infoProducto">
                             <h3 class="nombreProducto"><?= htmlspecialchars($producto['nombre']) ?></h3>
                             <p class="precioProducto">$<?= number_format($producto['precio_renta_dia'], 2) ?> por día</p>
-                            <p class="stockProducto">Unidades disponibles: <?= (int) $producto['stock_total'] ?></p>
+                            <p class="stockProducto">unidades disponibles: <?= (int) $producto['stock_total'] ?></p>
                         </div>
+
                         <div class="accionesProducto">
-                            <button
-                                class="btnAgregar"
-                                type="button"
-                                data-id="<?= (int) $producto['id_producto'] ?>"
-                                data-stock="<?= (int) $producto['stock_total'] ?>"
-                                onclick="agregarAlCarrito(this)">
-                                Agregar
-                            </button>
+                            <form method="POST" class="formAgregarCarrito" onsubmit="return capturarCantidad(event, <?= (int) $producto['id_producto'] ?>, <?= (int) $producto['stock_total'] ?>)">
+                                <input type="hidden" name="accion" value="agregar_carrito">
+                                <input type="hidden" name="id_producto" value="<?= (int) $producto['id_producto'] ?>">
+                                <input type="hidden" name="cantidad" id="cantidad-<?= (int) $producto['id_producto'] ?>" value="1">
+                                <button class="btnAgregar" type="submit">Agregar</button>
+                            </form>
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -76,6 +124,7 @@ $clienteAutenticado = isset($_SESSION['cliente']);
                 <p>No hay productos disponibles.</p>
             <?php endif; ?>
         </div>
+
     </div>
 
 <script>
@@ -88,29 +137,29 @@ function agregarAlCarrito(button) {
         return;
     }
 
-    const stock = parseInt(button.dataset.stock, 10);
-    const cantidadTexto = prompt(`¿Cuántas unidades deseas agregar? (Máximo ${stock})`, '1');
-    if (cantidadTexto === null) return;
+            const cantidadTexto = prompt('¿cuántas unidades deseas agregar?', '1');
+            if (cantidadTexto === null) {
+                event.preventDefault();
+                return false;
+            }
 
-    const cantidad = parseInt(cantidadTexto, 10);
-    if (isNaN(cantidad) || cantidad < 1 || cantidad > stock) {
-        alert('Cantidad inválida.');
-        return;
-    }
+            const cantidad = Number.parseInt(cantidadTexto, 10);
+            if (!Number.isInteger(cantidad) || cantidad <= 0) {
+                alert('ingresa una cantidad válida.');
+                event.preventDefault();
+                return false;
+            }
 
-    const formData = new URLSearchParams();
-    formData.append('accion', 'agregar');
-    formData.append('id_producto', button.dataset.id);
-    formData.append('cantidad', cantidad.toString());
+            if (cantidad > stockDisponible) {
+                alert('la cantidad solicitada supera el stock disponible.');
+                event.preventDefault();
+                return false;
+            }
 
-    fetch('../../../backend/controllers/carrito_acciones.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: formData.toString()
-    }).then(r => r.json()).then(data => {
-        alert(data.mensaje || 'Producto agregado.');
-    }).catch(() => alert('No fue posible agregar al carrito.'));
-}
-</script>
+            document.getElementById('cantidad-' + idProducto).value = String(cantidad);
+            return true;
+        }
+    </script>
+
 </body>
 </html>
