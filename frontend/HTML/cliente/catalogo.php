@@ -46,7 +46,7 @@ unset($_SESSION['mensaje_carrito']);
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="catalogo.css">
+    <link rel="stylesheet" href="<?= htmlspecialchars(url_cliente('catalogo.css')) ?>">
     <title>Catálogo</title>
 </head>
 <body>
