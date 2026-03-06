@@ -1,17 +1,9 @@
 <?php
 require_once __DIR__ . '/auth.php';
 
-if (!isset($productos) || !isset($categorias)) {
-    require_once __DIR__ . '/../../../backend/controllers/CatalogoController.php';
-    $controllerCatalogo = new CatalogoController();
-    $tipoSeleccionado = $_GET['tipo'] ?? null;
-    $productos = $controllerCatalogo->obtenerProductos($tipoSeleccionado);
-    $categorias = $controllerCatalogo->obtenerCategorias();
-}
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['accion'] ?? '') === 'agregar_carrito') {
     if (!usuario_autenticado()) {
-        header('Location: ' . url_login(url_cliente('catalogo.php')));
+        header('Location: inicio_de_sesion.php?redirect=' . urlencode('catalogo.php'));
         exit;
     }
 
@@ -37,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['accion'] ?? '') === 'agreg
         }
     }
 
-    $redireccion = url_cliente('catalogo.php');
+    $redireccion = 'catalogo.php';
     if (!empty($_GET['tipo'])) {
         $redireccion .= '?tipo=' . urlencode($_GET['tipo']);
     }
@@ -64,13 +56,13 @@ unset($_SESSION['mensaje_carrito']);
         <div id="headerCatalogo">
             <h1 id="tituloCatalogo">Catálogo de Productos</h1>
             <button id="btnCatalogo" disabled>Catálogo</button>
-            <button id="btnCarrito" onclick="location.href='<?= htmlspecialchars(url_cliente('carrito.php')) ?>'">Carrito</button>
-            <button id="btnMisPedidos" onclick="location.href='<?= htmlspecialchars(url_cliente('pedido.php')) ?>'">Mis Pedidos</button>
-            <button id="btnPerfil" onclick="location.href='<?= htmlspecialchars(url_cliente('perfil.html')) ?>'">Perfil</button>
+            <button id="btnCarrito" onclick="location.href='carrito.php'">Carrito</button>
+            <button id="btnMisPedidos" onclick="location.href='pedido.php'">Mis Pedidos</button>
+            <button id="btnPerfil" onclick="location.href='perfil.html'">Perfil</button>
             <?php if (usuario_autenticado()): ?>
-                <button id="btnCerrarSesion" onclick="location.href='<?= htmlspecialchars(url_cliente('inicio_de_sesion.php?logout=1')) ?>'">Cerrar sesión</button>
+                <button id="btnCerrarSesion" onclick="location.href='inicio_de_sesion.php?logout=1'">Cerrar sesión</button>
             <?php else: ?>
-                <button id="btnIniciarSesion" onclick="location.href='<?= htmlspecialchars(url_login(url_cliente('catalogo.php'))) ?>'">Iniciar sesión</button>
+                <button id="btnIniciarSesion" onclick="location.href='inicio_de_sesion.php?redirect=<?= urlencode('catalogo.php') ?>'">Iniciar sesión</button>
             <?php endif; ?>
         </div>
 
@@ -145,7 +137,7 @@ unset($_SESSION['mensaje_carrito']);
 
             if (!autenticado) {
                 event.preventDefault();
-                window.location.href = '<?= htmlspecialchars(url_login(url_cliente('catalogo.php'))) ?>';
+                window.location.href = 'inicio_de_sesion.php?redirect=' + encodeURIComponent('catalogo.php');
                 return false;
             }
 

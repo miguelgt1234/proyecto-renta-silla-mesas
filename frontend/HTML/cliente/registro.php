@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="<?= htmlspecialchars(url_cliente('registro.css')) ?>">
+    <link rel="stylesheet" href="registro.css">
     <title>Registro</title>
 </head>
 <body>
@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <button type="submit" class="btn-registro">Registrarse</button>
-        <p class="login-link">¿ya tienes cuenta? <a href="<?= htmlspecialchars(url_cliente('inicio_de_sesion.php')) ?>">inicia sesión</a></p>
+        <p class="login-link">¿ya tienes cuenta? <a href="inicio_de_sesion.php">inicia sesión</a></p>
     </form>
 </main>
 

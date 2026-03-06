@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         guardar_carrito($carrito);
     }
 
-    header('Location: ' . url_cliente('carrito.php'));
+    header('Location: carrito.php');
     exit;
 }
 
@@ -60,7 +60,7 @@ if (!empty($carrito)) {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="<?= htmlspecialchars(url_cliente('carrito.css')) ?>">
+    <link rel="stylesheet" href="carrito.css">
     <title>Carrito</title>
 </head>
 <body>
@@ -69,10 +69,10 @@ if (!empty($carrito)) {
 
         <div id="headerCarrito">
             <h1>Carrito</h1>
-            <button onclick="location.href='<?= htmlspecialchars(url_cliente('catalogo.php')) ?>'">Catálogo</button>
+            <button onclick="location.href='catalogo.php'">Catálogo</button>
             <button disabled>Carrito</button>
-            <button onclick="location.href='<?= htmlspecialchars(url_cliente('pedido.php')) ?>'">Mis pedidos</button>
-            <button onclick="location.href='<?= htmlspecialchars(url_cliente('perfil.html')) ?>'">Perfil</button>
+            <button onclick="location.href='pedido.php'">Mis pedidos</button>
+            <button onclick="location.href='perfil.html'">Perfil</button>
         </div>
 
         <div id="listaCarrito">
@@ -97,7 +97,7 @@ if (!empty($carrito)) {
         </div>
 
         <div id="accionesCarrito">
-            <button onclick="location.href='<?= htmlspecialchars(url_cliente('confirmar_pedido.php')) ?>'" <?= empty($detalles) ? 'disabled' : '' ?>>
+            <button onclick="location.href='confirmar_pedido.php'" <?= empty($detalles) ? 'disabled' : '' ?>>
                 Confirmar pedido
             </button>
         </div>

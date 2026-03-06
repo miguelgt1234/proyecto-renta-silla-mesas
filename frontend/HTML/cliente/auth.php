@@ -6,37 +6,6 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-const BASE_CLIENTE = '/proyecto-renta-silla-mesas/frontend/HTML/cliente/';
-
-function url_cliente(string $ruta = ''): string {
-    return BASE_CLIENTE . ltrim($ruta, '/');
-}
-
-function url_login(string $redirect = ''): string {
-    $url = url_cliente('inicio_de_sesion.php');
-    if ($redirect !== '') {
-        $url .= '?redirect=' . urlencode($redirect);
-    }
-    return $url;
-}
-
-function normalizar_redirect(?string $redirect): string {
-    $default = url_cliente('catalogo.php');
-    if (!$redirect) {
-        return $default;
-    }
-
-    if (str_starts_with($redirect, '/proyecto-renta-silla-mesas/')) {
-        return $redirect;
-    }
-
-    if (!str_contains($redirect, '://')) {
-        return url_cliente(ltrim($redirect, '/'));
-    }
-
-    return $default;
-}
-
 function usuario_autenticado(): bool {
     return isset($_SESSION['cliente']);
 }
@@ -47,8 +16,8 @@ function obtener_cliente_autenticado(): ?array {
 
 function requerir_autenticacion(): void {
     if (!usuario_autenticado()) {
-        $destino = $_SERVER['REQUEST_URI'] ?? url_cliente('catalogo.php');
-        header('Location: ' . url_login($destino));
+        $destino = urlencode($_SERVER['REQUEST_URI'] ?? 'catalogo.php');
+        header("Location: inicio_de_sesion.php?redirect={$destino}");
         exit;
     }
 }
