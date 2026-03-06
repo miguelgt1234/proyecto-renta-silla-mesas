@@ -114,6 +114,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $conexion->commit();
             guardar_carrito([]);
             $mensaje = 'pedido confirmado correctamente. revisa tus pedidos para ver el detalle.';
+
+            // Intentar crear evento en Google Calendar
+            require_once __DIR__ . '/../../../backend/controllers/google_calendar_handler.php';
+            $handler = new GoogleCalendarHandler();
+            $pedidoInfo = [
+                'id_pedido' => $idPedido,
+                'cliente_nombre' => $cliente['nombres'] ?? 'Cliente',
+                'fecha_entrega' => $fechaEntrega,
+                'fecha_recogida' => $fechaRecogida,
+                'direccion' => $direccion,
+                'total' => $total
+            ];
+            $resultadoCal = $handler->crearEventoPedido($pedidoInfo);
+            if ($resultadoCal['success']) {
+                $_SESSION['evento_calendar_link'] = $resultadoCal['event_link'] ?? '';
+                $mensaje .= ' Tu evento ha sido creado en Google Calendar.';
+            }
         } catch (Throwable $exception) {
             if ($conexion->inTransaction()) {
                 $conexion->rollBack();
@@ -128,12 +145,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="confirmar_pedido.css">
-    <link
-        rel="stylesheet"
-        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-        crossorigin=""
-    >
     <title>Confirmar Pedido</title>
 </head>
 <body>
@@ -189,36 +200,63 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <script>
         const inputDireccion = document.getElementById('direccion');
+        const fechaEntrega = document.getElementById('fechaEntrega');
+        const fechaRecogida = document.getElementById('fechaRecogida');
+
         function initMap() {
-            const centro = [19.4326, -99.1332];
-            const mapa = L.map('mapa').setView(centro, 12);
+            const mapaContenedor = document.getElementById('mapa');
+            if (!window.google || !window.google.maps) {
+                const mensaje = `
+                    <div style="padding: 20px; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 4px; color: #721c24;">
+                        <strong>❌ Error de carga de Google Maps</strong><br>
+                        Verifica que:<br>
+                        1. Tu API key sea válida<br>
+                        2. Tengas habilitadas: Maps JavaScript API, Geocoding API<br>
+                        3. El dominio esté autorizado en Google Cloud Console<br>
+                        <small>Abre la consola (F12) para más detalles</small>
+                    </div>
+                `;
+                mapaContenedor.innerHTML = mensaje;
+                console.error('Google Maps no cargó');
+                return;
+            }
 
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19,
-                attribution: '© OpenStreetMap contributors'
-            }).addTo(mapa);
+            const centro = { lat: 19.4326, lng: -99.1332 };
+            const mapa = new google.maps.Map(mapaContenedor, {
+                center: centro,
+                zoom: 12
+            });
 
-            let marcador = L.marker(centro).addTo(mapa);
-            document.getElementById('latitud').value = centro[0];
-            document.getElementById('longitud').value = centro[1];
-            inputDireccion.value = `${centro[0].toFixed(6)}, ${centro[1].toFixed(6)}`;
+            let marcador = new google.maps.Marker({ position: centro, map: mapa });
+            document.getElementById('latitud').value = centro.lat;
+            document.getElementById('longitud').value = centro.lng;
 
-            mapa.on('click', (evento) => {
-                const { lat, lng } = evento.latlng;
-                marcador.setLatLng([lat, lng]);
-                document.getElementById('latitud').value = lat;
-                document.getElementById('longitud').value = lng;
-                inputDireccion.value = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+            const geocoder = new google.maps.Geocoder();
+
+            function actualizarDireccion(ubicacion) {
+                geocoder.geocode({ location: ubicacion }, (results, status) => {
+                    if (status === google.maps.GeocoderStatus.OK && results && results.length > 0) {
+                        inputDireccion.value = results[0].formatted_address;
+                    } else {
+                        inputDireccion.value = `${ubicacion.lat().toFixed(6)}, ${ubicacion.lng().toFixed(6)}`;
+                    }
+                });
+            }
+
+            actualizarDireccion(centro);
+
+            mapa.addListener('click', (evento) => {
+                const ubicacion = evento.latLng;
+                marcador.setPosition(ubicacion);
+                document.getElementById('latitud').value = ubicacion.lat();
+                document.getElementById('longitud').value = ubicacion.lng();
+                actualizarDireccion(ubicacion);
             });
         }
 
         window.addEventListener('DOMContentLoaded', initMap);
     </script>
-    <script
-        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-        crossorigin=""
-    ></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBFYpRdvQXuQJw5FQtt4O8RkmOJBAGypR0&callback=initMap"></script>
 
 </body>
 </html>
