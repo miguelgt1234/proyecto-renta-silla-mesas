@@ -6,19 +6,19 @@ if (isset($_GET['logout']) && $_GET['logout'] === '1') {
     session_start();
 }
 
-$redirect = normalizar_redirect($_GET['redirect'] ?? url_cliente('catalogo.php'));
-
 if (usuario_autenticado()) {
-    header('Location: ' . $redirect);
+    $destino = $_GET['redirect'] ?? 'catalogo.php';
+    header('Location: ' . $destino);
     exit;
 }
 
 $error = '';
+$redirect = $_GET['redirect'] ?? 'catalogo.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $correo = trim($_POST['correo'] ?? '');
     $password = $_POST['password'] ?? '';
-    $redirect = normalizar_redirect($_POST['redirect'] ?? url_cliente('catalogo.php'));
+    $redirect = $_POST['redirect'] ?? 'catalogo.php';
 
     if ($correo !== '' && $password !== '') {
         $conexion = obtener_conexion_app();
@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="<?= htmlspecialchars(url_cliente('registro.css')) ?>">
+    <link rel="stylesheet" href="registro.css">
     <title>Iniciar sesión</title>
 </head>
 <body>
@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <button type="submit" class="btn-registro">Ingresar</button>
-            <p class="login-link">¿aún no tienes cuenta? <a href="<?= htmlspecialchars(url_cliente('registro.php')) ?>">crear cuenta</a></p>
+            <p class="login-link">¿aún no tienes cuenta? <a href="registro.php">crear cuenta</a></p>
         </form>
     </main>
 </body>

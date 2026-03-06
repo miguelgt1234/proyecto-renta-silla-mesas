@@ -6,7 +6,7 @@ $cliente = obtener_cliente_autenticado();
 $carrito = obtener_carrito();
 
 if (empty($carrito)) {
-    header('Location: ' . url_cliente('carrito.php'));
+    header('Location: carrito.php');
     exit;
 }
 
@@ -127,7 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="<?= htmlspecialchars(url_cliente('confirmar_pedido.css')) ?>">
+    <link rel="stylesheet" href="confirmar_pedido.css">
     <title>Confirmar Pedido</title>
 </head>
 <body>
@@ -135,10 +135,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div id="contenedorConfirmar">
         <div id="headerConfirmar">
             <h1>Confirmar Pedido</h1>
-            <button onclick="location.href='<?= htmlspecialchars(url_cliente('catalogo.php')) ?>'">Catálogo</button>
-            <button onclick="location.href='<?= htmlspecialchars(url_cliente('carrito.php')) ?>'">Carrito</button>
-            <button onclick="location.href='<?= htmlspecialchars(url_cliente('pedido.php')) ?>'">Mis pedidos</button>
-            <button onclick="location.href='<?= htmlspecialchars(url_cliente('perfil.html')) ?>'">Perfil</button>
+            <button onclick="location.href='catalogo.php'">Catálogo</button>
+            <button onclick="location.href='carrito.php'">Carrito</button>
+            <button onclick="location.href='pedido.php'">Mis pedidos</button>
+            <button onclick="location.href='perfil.html'">Perfil</button>
         </div>
 
         <?php if ($error): ?><p><?= htmlspecialchars($error) ?></p><?php endif; ?>

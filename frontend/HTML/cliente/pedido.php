@@ -19,7 +19,7 @@ $pedidos = $stmtPedidos->fetchAll(PDO::FETCH_ASSOC);
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="<?= htmlspecialchars(url_cliente('pedido.css')) ?>">
+    <link rel="stylesheet" href="pedido.css">
     <title>Mis pedidos</title>
 </head>
 <body>
@@ -27,10 +27,10 @@ $pedidos = $stmtPedidos->fetchAll(PDO::FETCH_ASSOC);
 <div id="contenedorPedidos">
     <div id="headerPedidos">
         <h1>Mis pedidos</h1>
-        <button onclick="location.href='<?= htmlspecialchars(url_cliente('catalogo.php')) ?>'">Catálogo</button>
-        <button onclick="location.href='<?= htmlspecialchars(url_cliente('carrito.php')) ?>'">Carrito</button>
+        <button onclick="location.href='catalogo.php'">Catálogo</button>
+        <button onclick="location.href='carrito.php'">Carrito</button>
         <button disabled>Mis pedidos</button>
-        <button onclick="location.href='<?= htmlspecialchars(url_cliente('perfil.html')) ?>'">Perfil</button>
+        <button onclick="location.href='perfil.html'">Perfil</button>
     </div>
 
     <div id="tablaPedidos">

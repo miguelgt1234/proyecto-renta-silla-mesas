@@ -1,23 +1,9 @@
 <?php
 require_once __DIR__ . '/auth.php';
 
-if (!isset($productos) || !isset($categorias)) {
-    require_once __DIR__ . '/../../../backend/controllers/CatalogoController.php';
-    $controllerCatalogo = new CatalogoController();
-    $tipoSeleccionado = $_GET['tipo'] ?? null;
-    $productos = $controllerCatalogo->obtenerProductos($tipoSeleccionado);
-    $categorias = $controllerCatalogo->obtenerCategorias();
-}
-
-
-$rutaCatalogoActual = strtok($_SERVER['REQUEST_URI'] ?? '', '?');
-if (!$rutaCatalogoActual) {
-    $rutaCatalogoActual = url_cliente('catalogo.php');
-}
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['accion'] ?? '') === 'agregar_carrito') {
     if (!usuario_autenticado()) {
-        header('Location: ' . url_login($_SERVER['REQUEST_URI'] ?? $rutaCatalogoActual));
+        header('Location: inicio_de_sesion.php?redirect=' . urlencode('catalogo.php'));
         exit;
     }
 
@@ -43,10 +29,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['accion'] ?? '') === 'agreg
         }
     }
 
-    $redireccion = $rutaCatalogoActual;
-    $tipoRedireccion = $_POST['tipo'] ?? ($_GET['tipo'] ?? '');
-    if ($tipoRedireccion !== '') {
-        $redireccion .= '?tipo=' . urlencode((string) $tipoRedireccion);
+    $redireccion = 'catalogo.php';
+    if (!empty($_GET['tipo'])) {
+        $redireccion .= '?tipo=' . urlencode($_GET['tipo']);
     }
 
     header('Location: ' . $redireccion);
@@ -55,7 +40,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['accion'] ?? '') === 'agreg
 
 $mensajeCarrito = $_SESSION['mensaje_carrito'] ?? '';
 unset($_SESSION['mensaje_carrito']);
-$clienteAutenticado = usuario_autenticado();
 ?>
 
 <!DOCTYPE html>
@@ -72,13 +56,13 @@ $clienteAutenticado = usuario_autenticado();
         <div id="headerCatalogo">
             <h1 id="tituloCatalogo">Catálogo de Productos</h1>
             <button id="btnCatalogo" disabled>Catálogo</button>
-            <button id="btnCarrito" onclick="location.href='<?= htmlspecialchars(url_cliente('carrito.php')) ?>'">Carrito</button>
-            <button id="btnMisPedidos" onclick="location.href='<?= htmlspecialchars(url_cliente('pedido.php')) ?>'">Mis Pedidos</button>
-            <button id="btnPerfil" onclick="location.href='<?= htmlspecialchars(url_cliente('perfil.html')) ?>'">Perfil</button>
-            <?php if ($clienteAutenticado): ?>
-                <button id="btnCerrarSesion" onclick="location.href='<?= htmlspecialchars(url_cliente('inicio_de_sesion.php?logout=1')) ?>'">Cerrar sesión</button>
+            <button id="btnCarrito" onclick="location.href='carrito.php'">Carrito</button>
+            <button id="btnMisPedidos" onclick="location.href='pedido.php'">Mis Pedidos</button>
+            <button id="btnPerfil" onclick="location.href='perfil.html'">Perfil</button>
+            <?php if (usuario_autenticado()): ?>
+                <button id="btnCerrarSesion" onclick="location.href='inicio_de_sesion.php?logout=1'">Cerrar sesión</button>
             <?php else: ?>
-                <button id="btnIniciarSesion" onclick="location.href='<?= htmlspecialchars(url_login($_SERVER['REQUEST_URI'] ?? $rutaCatalogoActual)) ?>'">Iniciar sesión</button>
+                <button id="btnIniciarSesion" onclick="location.href='inicio_de_sesion.php?redirect=<?= urlencode('catalogo.php') ?>'">Iniciar sesión</button>
             <?php endif; ?>
         </div>
 
@@ -131,13 +115,10 @@ $clienteAutenticado = usuario_autenticado();
                         </div>
 
                         <div class="accionesProducto">
-                            <form method="POST" action="<?= htmlspecialchars($rutaCatalogoActual) ?>" class="formAgregarCarrito" onsubmit="return capturarCantidad(event, <?= (int) $producto['id_producto'] ?>, <?= (int) $producto['stock_total'] ?>)">
+                            <form method="POST" class="formAgregarCarrito" onsubmit="return capturarCantidad(event, <?= (int) $producto['id_producto'] ?>, <?= (int) $producto['stock_total'] ?>)">
                                 <input type="hidden" name="accion" value="agregar_carrito">
                                 <input type="hidden" name="id_producto" value="<?= (int) $producto['id_producto'] ?>">
                                 <input type="hidden" name="cantidad" id="cantidad-<?= (int) $producto['id_producto'] ?>" value="1">
-                                <?php if (!empty($tipoSeleccionado)): ?>
-                                    <input type="hidden" name="tipo" value="<?= htmlspecialchars((string) $tipoSeleccionado) ?>">
-                                <?php endif; ?>
                                 <button class="btnAgregar" type="submit">Agregar</button>
                             </form>
                         </div>
@@ -152,11 +133,11 @@ $clienteAutenticado = usuario_autenticado();
 
     <script>
         function capturarCantidad(event, idProducto, stockDisponible) {
-            const autenticado = <?= $clienteAutenticado ? 'true' : 'false' ?>;
+            const autenticado = <?= usuario_autenticado() ? 'true' : 'false' ?>;
 
             if (!autenticado) {
                 event.preventDefault();
-                window.location.href = '<?= htmlspecialchars(url_login($_SERVER['REQUEST_URI'] ?? $rutaCatalogoActual)) ?>';
+                window.location.href = 'inicio_de_sesion.php?redirect=' + encodeURIComponent('catalogo.php');
                 return false;
             }
 
