@@ -8,7 +8,7 @@ $clienteAutenticado = isset($_SESSION['cliente']);
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="catalogo.css">
+    <link rel="stylesheet" href="/proyecto-renta-silla-mesas/frontend/HTML/cliente/catalogo.css">
     <title>Catálogo</title>
 </head>
 <body>
@@ -16,13 +16,13 @@ $clienteAutenticado = isset($_SESSION['cliente']);
         <div id="headerCatalogo">
             <h1 id="tituloCatalogo">Catálogo de Productos</h1>
             <button id="btnCatalogo" disabled>Catálogo</button>
-            <button id="btnCarrito" onclick="location.href='carrito.php'">Carrito</button>
-            <button id="btnMisPedidos" onclick="location.href='pedido.php'">Mis Pedidos</button>
-            <button id="btnPerfil" onclick="location.href='perfil.html'">Perfil</button>
+            <button id="btnCarrito" onclick="location.href='/proyecto-renta-silla-mesas/frontend/HTML/cliente/carrito.php'">Carrito</button>
+            <button id="btnMisPedidos" onclick="location.href='/proyecto-renta-silla-mesas/frontend/HTML/cliente/pedido.php'">Mis Pedidos</button>
+            <button id="btnPerfil" onclick="location.href='/proyecto-renta-silla-mesas/frontend/HTML/cliente/perfil.html'">Perfil</button>
             <?php if ($clienteAutenticado): ?>
-                <button onclick="location.href='../../backend/controllers/logout.php'">Cerrar sesión</button>
+                <button onclick="location.href='/proyecto-renta-silla-mesas/backend/controllers/logout.php'">Cerrar sesión</button>
             <?php else: ?>
-                <button onclick="location.href='inicio_de_sesion.php'">Iniciar sesión</button>
+                <button onclick="location.href='/proyecto-renta-silla-mesas/frontend/HTML/cliente/inicio_de_sesion.php'">Iniciar sesión</button>
             <?php endif; ?>
         </div>
 
@@ -33,7 +33,7 @@ $clienteAutenticado = isset($_SESSION['cliente']);
             </div>
 
             <div id="contenedorFiltro">
-                <form id="formFiltro" method="GET" action="../../../backend/controllers/catalago.php">
+                <form id="formFiltro" method="GET" action="/proyecto-renta-silla-mesas/backend/controllers/catalago.php">
                     <label id="labelFiltroTipo" for="selectTipoProducto">Filtrar por tipo:</label>
                     <select id="selectTipoProducto" name="tipo">
                         <option value="">Todos</option>
@@ -53,7 +53,7 @@ $clienteAutenticado = isset($_SESSION['cliente']);
                 <?php foreach ($productos as $producto): ?>
                     <div class="productoCard">
                         <div class="imagenProducto">
-                            <img class="imgProducto" src="/proyecto-renta-silla-mesas/uploads/<?= htmlspecialchars($producto['imagen']) ?>" alt="Imagen del producto">
+                            <img class="imgProducto" src="/proyecto-renta-silla-mesas/backend/uploads/<?= htmlspecialchars($producto['imagen']) ?>" alt="Imagen del producto">
                         </div>
                         <div class="infoProducto">
                             <h3 class="nombreProducto"><?= htmlspecialchars($producto['nombre']) ?></h3>
@@ -82,7 +82,9 @@ $clienteAutenticado = isset($_SESSION['cliente']);
 const clienteAutenticado = <?= $clienteAutenticado ? 'true' : 'false' ?>;
 function agregarAlCarrito(button) {
     if (!clienteAutenticado) {
-        window.location.href = 'inicio_de_sesion.php';
+        // redirect to login page, preserving current location for return
+        const returnUrl = encodeURIComponent(window.location.href);
+        window.location.href = '/proyecto-renta-silla-mesas/frontend/HTML/cliente/inicio_de_sesion.php?return=' + returnUrl;
         return;
     }
 

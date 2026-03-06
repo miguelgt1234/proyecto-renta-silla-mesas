@@ -19,6 +19,9 @@
             <p><?= htmlspecialchars($_SESSION['registro_ok']); unset($_SESSION['registro_ok']); ?></p>
         <?php endif; ?>
         <form method="post" action="../../../backend/controllers/login_cliente.php">
+            <?php if (!empty($_GET['return'])): ?>
+                <input type="hidden" name="return" value="<?= htmlspecialchars($_GET['return']) ?>">
+            <?php endif; ?>
             <input type="email" id="txt_correo" name="correo" placeholder="Correo" required>
             <input type="password" id="txt_contrasena" name="contrasena" placeholder="Contraseña" required>
             <button type="submit" id="btn_ingresar">INGRESAR</button>
