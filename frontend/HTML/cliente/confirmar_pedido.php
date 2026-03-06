@@ -128,6 +128,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="confirmar_pedido.css">
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""
+    >
     <title>Confirmar Pedido</title>
 </head>
 <body>
@@ -179,124 +185,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div id="mapa" style="width: 100%; height: 250px; background: #e9ecef; margin-bottom: 10px;"></div>
         </section>
 
-        <section>
-            <h3>Integración Google Calendar y Firebase Cloud Messaging</h3>
-            <a id="linkCalendar" target="_blank" rel="noopener">Crear evento rápido en Google Calendar</a>
-        </section>
     </div>
 
     <script>
-        const linkCalendar = document.getElementById('linkCalendar');
-        const fechaEntrega = document.getElementById('fechaEntrega');
-        const fechaRecogida = document.getElementById('fechaRecogida');
         const inputDireccion = document.getElementById('direccion');
-
-        function formatoCalendar(valor) {
-            return valor.replace(/[-:]/g, '').replace('T', '') + '00';
-        }
-
-        function actualizarEnlaceCalendar() {
-            if (!fechaEntrega.value || !fechaRecogida.value) {
-                linkCalendar.href = '#';
-                return;
-            }
-
-            const inicio = formatoCalendar(fechaEntrega.value);
-            const fin = formatoCalendar(fechaRecogida.value);
-            const texto = encodeURIComponent('renta de mobiliario');
-            const detalles = encodeURIComponent('pedido creado en renta de sillas y mesas');
-            linkCalendar.href = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${texto}&dates=${inicio}/${fin}&details=${detalles}`;
-        }
-
-        fechaEntrega.addEventListener('change', actualizarEnlaceCalendar);
-        fechaRecogida.addEventListener('change', actualizarEnlaceCalendar);
-
         function initMap() {
-            const mapaContenedor = document.getElementById('mapa');
-            if (!window.google || !window.google.maps) {
-                const mensaje = `
-                    <div style="padding: 20px; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 4px; color: #721c24;">
-                        <strong>Error de carga de Google Maps</strong><br>
-                        Verifica que:<br>
-                        1. Tu API key sea válida<br>
-                        2. Tengas habilitadas: Maps JavaScript API, Geocoding API<br>
-                        3. El dominio esté autorizado en Google Cloud Console<br>
-                        4. No haya restricciones de IP o referrer<br>
-                        <small>Abre la consola (F12) para más detalles</small>
-                    </div>
-                `;
-                mapaContenedor.innerHTML = mensaje;
-                console.error('Google Maps no cargó. Detalles:', { google: window.google, maps: window.google?.maps });
-                return;
-            }
+            const centro = [19.4326, -99.1332];
+            const mapa = L.map('mapa').setView(centro, 12);
 
-            const centro = { lat: 19.4326, lng: -99.1332 };
-            const mapa = new google.maps.Map(mapaContenedor, {
-                center: centro,
-                zoom: 12
-            });
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(mapa);
 
-            let marcador = new google.maps.Marker({ position: centro, map: mapa });
-            document.getElementById('latitud').value = centro.lat;
-            document.getElementById('longitud').value = centro.lng;
+            let marcador = L.marker(centro).addTo(mapa);
+            document.getElementById('latitud').value = centro[0];
+            document.getElementById('longitud').value = centro[1];
+            inputDireccion.value = `${centro[0].toFixed(6)}, ${centro[1].toFixed(6)}`;
 
-            // Utilizar Geocoder para obtener dirección
-            const geocoder = new google.maps.Geocoder();
-
-            function actualizarDireccion(ubicacion) {
-                geocoder.geocode({ location: ubicacion }, (results, status) => {
-                    if (status === google.maps.GeocoderStatus.OK && results && results.length > 0) {
-                        // Usar la dirección formateada del primer resultado
-                        inputDireccion.value = results[0].formatted_address;
-                    } else if (status === google.maps.GeocoderStatus.ZERO_RESULTS) {
-                        // Si no encuentra resultados, usar la dirección de nivel inferior
-                        console.warn('No se encontraron resultados de geocodificación');
-                        inputDireccion.value = `${ubicacion.lat().toFixed(6)}, ${ubicacion.lng().toFixed(6)}`;
-                    } else {
-                        console.warn('Error de geocodificación:', status);
-                        inputDireccion.value = `${ubicacion.lat().toFixed(6)}, ${ubicacion.lng().toFixed(6)}`;
-                    }
-                });
-            }
-
-            // Obtener dirección inicial
-            actualizarDireccion(centro);
-
-            mapa.addListener('click', (evento) => {
-                const ubicacion = evento.latLng;
-                marcador.setPosition(ubicacion);
-                document.getElementById('latitud').value = ubicacion.lat();
-                document.getElementById('longitud').value = ubicacion.lng();
-                actualizarDireccion(ubicacion);
+            mapa.on('click', (evento) => {
+                const { lat, lng } = evento.latlng;
+                marcador.setLatLng([lat, lng]);
+                document.getElementById('latitud').value = lat;
+                document.getElementById('longitud').value = lng;
+                inputDireccion.value = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
             });
         }
 
-        window.initMap = initMap;
+        window.addEventListener('DOMContentLoaded', initMap);
     </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBFYpRdvQXuQJw5FQtt4O8RkmOJBAGypR0&callback=initMap"></script>
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""
+    ></script>
 
 </body>
-<script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyBv-v4-himeBF5cR4qmEsZBQPtIkfDjMxc",
-    authDomain: "sistemarenta-489401.firebaseapp.com",
-    projectId: "sistemarenta-489401",
-    storageBucket: "sistemarenta-489401.firebasestorage.app",
-    messagingSenderId: "326104073981",
-    appId: "1:326104073981:web:b51f8437c6be2c5770e094",
-    measurementId: "G-6KYBNN555Y"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-</script>
 </html>
