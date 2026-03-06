@@ -69,7 +69,7 @@ if (!empty($carrito)) {
 
         <div id="headerCarrito">
             <h1>Carrito</h1>
-            <button onclick="location.href='catalogo.php'">Catálogo</button>
+          <button onclick="location.href='../../../backend/controllers/catalago.php'">Catálogo</button>
             <button disabled>Carrito</button>
             <button onclick="location.href='pedido.php'">Mis pedidos</button>
             <button onclick="location.href='perfil.html'">Perfil</button>
