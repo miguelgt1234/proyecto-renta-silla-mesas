@@ -1,5 +1,11 @@
 <?php
 require_once __DIR__ . '/auth.php';
+require_once __DIR__ . '/../../../backend/controllers/google_calendar_handler.php';
+require_once __DIR__ . '/../../../backend/controllers/fcm_handler.php';
+
+$googleConfig = require __DIR__ . '/../../../backend/config/google_apis.php';
+$googleMapsApiKey = $googleConfig['maps_api_key'] ?? 'TU_API_KEY_DE_GOOGLE_MAPS';
+
 requerir_autenticacion();
 
 $cliente = obtener_cliente_autenticado();
@@ -111,9 +117,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmtNotificacion->bindValue(':id_cliente', (int) $cliente['id_cliente'], PDO::PARAM_INT);
             $stmtNotificacion->execute();
 
+            $pedidoApiData = [
+                'id_pedido' => $idPedido,
+                'cliente_nombre' => $cliente['nombre'] ?? 'Cliente',
+                'fecha_entrega' => date('c', strtotime($fechaEntrega)),
+                'fecha_recogida' => date('c', strtotime($fechaRecogida)),
+                'direccion' => $direccion,
+                'total' => $total
+            ];
+
+            $calendarHandler = new GoogleCalendarHandler();
+            $resultadoCalendar = $calendarHandler->crearEventoPedido($pedidoApiData);
+
+            // Token de dispositivo (placeholder: aquí podrías leerlo de BD por id_cliente)
+            $deviceToken = $_POST['fcm_device_token'] ?? null;
+            $fcmHandler = new FcmHandler();
+            $resultadoFcm = $fcmHandler->enviarNotificacionPedido($deviceToken, $pedidoApiData);
+
             $conexion->commit();
             guardar_carrito([]);
             $mensaje = 'pedido confirmado correctamente. revisa tus pedidos para ver el detalle.';
+
+            if (!($resultadoCalendar['success'] ?? false)) {
+                $mensaje .= ' Google Calendar API pendiente: ' . ($resultadoCalendar['message'] ?? 'sin detalle') . '.';
+            }
+            if (!($resultadoFcm['success'] ?? false)) {
+                $mensaje .= ' FCM pendiente: ' . ($resultadoFcm['message'] ?? 'sin detalle') . '.';
+            }
         } catch (Throwable $exception) {
             if ($conexion->inTransaction()) {
                 $conexion->rollBack();
@@ -128,12 +158,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="confirmar_pedido.css">
-    <link
-        rel="stylesheet"
-        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-        crossorigin=""
-    >
     <title>Confirmar Pedido</title>
 </head>
 <body>
@@ -177,6 +201,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="hidden" name="latitud" id="latitud">
             <input type="hidden" name="longitud" id="longitud">
 
+            <input type="hidden" name="fcm_device_token" id="fcmDeviceToken">
             <button type="submit">Confirmar pedido</button>
         </form>
 
@@ -189,36 +214,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <script>
         const inputDireccion = document.getElementById('direccion');
+
         function initMap() {
-            const centro = [19.4326, -99.1332];
-            const mapa = L.map('mapa').setView(centro, 12);
+            const centro = { lat: 19.4326, lng: -99.1332 };
+            const mapa = new google.maps.Map(document.getElementById('mapa'), {
+                center: centro,
+                zoom: 12,
+            });
 
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19,
-                attribution: '© OpenStreetMap contributors'
-            }).addTo(mapa);
+            const marcador = new google.maps.Marker({
+                position: centro,
+                map: mapa,
+                draggable: true,
+            });
 
-            let marcador = L.marker(centro).addTo(mapa);
-            document.getElementById('latitud').value = centro[0];
-            document.getElementById('longitud').value = centro[1];
-            inputDireccion.value = `${centro[0].toFixed(6)}, ${centro[1].toFixed(6)}`;
-
-            mapa.on('click', (evento) => {
-                const { lat, lng } = evento.latlng;
-                marcador.setLatLng([lat, lng]);
+            function actualizarCampos(posicion) {
+                const lat = posicion.lat();
+                const lng = posicion.lng();
                 document.getElementById('latitud').value = lat;
                 document.getElementById('longitud').value = lng;
                 inputDireccion.value = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+            }
+
+            actualizarCampos(marcador.getPosition());
+
+            mapa.addListener('click', (evento) => {
+                marcador.setPosition(evento.latLng);
+                actualizarCampos(evento.latLng);
+            });
+
+            marcador.addListener('dragend', () => {
+                actualizarCampos(marcador.getPosition());
             });
         }
 
-        window.addEventListener('DOMContentLoaded', initMap);
+        window.initMap = initMap;
     </script>
-    <script
-        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-        crossorigin=""
-    ></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=<?= htmlspecialchars($googleMapsApiKey) ?>&callback=initMap"></script>
 
 </body>
 </html>
