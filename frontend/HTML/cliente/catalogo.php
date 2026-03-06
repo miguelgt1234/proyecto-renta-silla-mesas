@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . '/auth.php';
 
+$clienteAutenticado = usuario_autenticado();
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['accion'] ?? '') === 'agregar_carrito') {
     if (!usuario_autenticado()) {
         header('Location: inicio_de_sesion.php?redirect=' . urlencode('catalogo.php'));
@@ -29,7 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['accion'] ?? '') === 'agreg
         }
     }
 
-    $redireccion = 'catalogo.php';
+    // after handling POST, redirect back to the controller so the view is reloaded correctly
+    $redireccion = '/proyecto-renta-silla-mesas/backend/controllers/catalago.php';
     if (!empty($_GET['tipo'])) {
         $redireccion .= '?tipo=' . urlencode($_GET['tipo']);
     }
@@ -128,38 +131,35 @@ unset($_SESSION['mensaje_carrito']);
     </div>
 
 <script>
+// helper to show quantity prompt and prevent submission if invalid
 const clienteAutenticado = <?= $clienteAutenticado ? 'true' : 'false' ?>;
-function agregarAlCarrito(button) {
+
+function capturarCantidad(event, idProducto, stockDisponible) {
     if (!clienteAutenticado) {
         // redirect to login page, preserving current location for return
         const returnUrl = encodeURIComponent(window.location.href);
         window.location.href = '/proyecto-renta-silla-mesas/frontend/HTML/cliente/inicio_de_sesion.php?return=' + returnUrl;
-        return;
+        event.preventDefault();
+        return false;
     }
 
-            const cantidadTexto = prompt('¿cuántas unidades deseas agregar?', '1');
-            if (cantidadTexto === null) {
-                event.preventDefault();
-                return false;
-            }
+    const cantidadTexto = prompt(`¿Cuántas unidades deseas agregar? (Máximo ${stockDisponible})`, '1');
+    if (cantidadTexto === null) {
+        event.preventDefault();
+        return false;
+    }
 
-            const cantidad = Number.parseInt(cantidadTexto, 10);
-            if (!Number.isInteger(cantidad) || cantidad <= 0) {
-                alert('ingresa una cantidad válida.');
-                event.preventDefault();
-                return false;
-            }
+    const cantidad = parseInt(cantidadTexto, 10);
+    if (isNaN(cantidad) || cantidad < 1 || cantidad > stockDisponible) {
+        alert('Cantidad inválida.');
+        event.preventDefault();
+        return false;
+    }
 
-            if (cantidad > stockDisponible) {
-                alert('la cantidad solicitada supera el stock disponible.');
-                event.preventDefault();
-                return false;
-            }
-
-            document.getElementById('cantidad-' + idProducto).value = String(cantidad);
-            return true;
-        }
-    </script>
+    document.getElementById('cantidad-' + idProducto).value = cantidad;
+    return true;
+}
+</script>
 
 </body>
 </html>

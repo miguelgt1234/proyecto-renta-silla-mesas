@@ -2,6 +2,9 @@
 require_once __DIR__ . '/auth.php';
 requerir_autenticacion();
 
+$mensajeCarrito = $_SESSION['mensaje_carrito'] ?? '';
+unset($_SESSION['mensaje_carrito']);
+
 $carrito = obtener_carrito();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -71,8 +74,8 @@ if (!empty($carrito)) {
             <h1>Carrito</h1>
           <button onclick="location.href='../../../backend/controllers/catalago.php'">Catálogo</button>
             <button disabled>Carrito</button>
-            <button onclick="location.href='pedido.php'">Mis pedidos</button>
-            <button onclick="location.href='perfil.html'">Perfil</button>
+            <button onclick="location.href='/proyecto-renta-silla-mesas/frontend/HTML/cliente/pedido.php'">Mis pedidos</button>
+            <button onclick="location.href='/proyecto-renta-silla-mesas/frontend/HTML/cliente/perfil.html'">Perfil</button>
         </div>
 
         <div id="listaCarrito">

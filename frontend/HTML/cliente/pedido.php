@@ -27,7 +27,7 @@ $pedidos = $stmtPedidos->fetchAll(PDO::FETCH_ASSOC);
 <div id="contenedorPedidos">
     <div id="headerPedidos">
         <h1>Mis pedidos</h1>
-        <button onclick="location.href='catalogo.php'">Catálogo</button>
+          <button onclick="location.href='../../../backend/controllers/catalago.php'">Catálogo</button>
         <button onclick="location.href='carrito.php'">Carrito</button>
         <button disabled>Mis pedidos</button>
         <button onclick="location.href='perfil.html'">Perfil</button>
