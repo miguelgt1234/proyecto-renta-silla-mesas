@@ -50,8 +50,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $direccion = trim($_POST['direccion'] ?? '');
     $fechaEntrega = $_POST['fecha_entrega'] ?? '';
     $fechaRecogida = $_POST['fecha_recogida'] ?? '';
-    $latitud = $_POST['latitud'] ?? null;
-    $longitud = $_POST['longitud'] ?? null;
+    $latitud      = $_POST['latitud'] ?? null;
+    $longitud     = $_POST['longitud'] ?? null;
+    $colonia      = trim($_POST['colonia'] ?? '');       
+    $ciudad       = trim($_POST['ciudad'] ?? '');        
+    $estado       = trim($_POST['estado'] ?? '');        
+    $codigoPostal = trim($_POST['codigo_postal'] ?? ''); 
 
     if ($direccion === '' || $fechaEntrega === '' || $fechaRecogida === '') {
         $error = 'completa todos los campos para confirmar el pedido';
@@ -67,13 +71,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
 
-            $sqlDireccion = 'INSERT INTO direcciones_guardadas_cliente (id_cliente, calle, latitud, longitud)
-                            VALUES (:id_cliente, :calle, :latitud, :longitud)';
+            $sqlDireccion = 'INSERT INTO direcciones_guardadas_cliente 
+                                (id_cliente, calle, colonia, ciudad, estado, codigo_postal, latitud, longitud)
+                            VALUES 
+                                (:id_cliente, :calle, :colonia, :ciudad, :estado, :codigo_postal, :latitud, :longitud)';
+
             $stmtDireccion = $conexion->prepare($sqlDireccion);
-            $stmtDireccion->bindValue(':id_cliente', (int) $cliente['id_cliente'], PDO::PARAM_INT);
-            $stmtDireccion->bindValue(':calle', $direccion);
-            $stmtDireccion->bindValue(':latitud', $latitud !== '' ? $latitud : null);
-            $stmtDireccion->bindValue(':longitud', $longitud !== '' ? $longitud : null);
+            $stmtDireccion->bindValue(':id_cliente',    (int) $cliente['id_cliente'], PDO::PARAM_INT);
+            $stmtDireccion->bindValue(':calle',         $direccion);
+            $stmtDireccion->bindValue(':colonia',       $colonia ?: null);
+            $stmtDireccion->bindValue(':ciudad',        $ciudad ?: null);
+            $stmtDireccion->bindValue(':estado',        $estado ?: null);
+            $stmtDireccion->bindValue(':codigo_postal', $codigoPostal ?: null);
+            $stmtDireccion->bindValue(':latitud',       $latitud !== '' ? $latitud : null);
+            $stmtDireccion->bindValue(':longitud',      $longitud !== '' ? $longitud : null);
             $stmtDireccion->execute();
             $idDireccion = (int) $conexion->lastInsertId();
 
@@ -159,6 +170,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <link rel="stylesheet" href="confirmar_pedido.css">
     <title>Confirmar Pedido</title>
+ <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app-compat.js"></script>
+ <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-messaging-compat.js"></script>
+
 </head>
 <body>
 
@@ -203,6 +217,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <input type="hidden" name="fcm_device_token" id="fcmDeviceToken">
             <button type="submit">Confirmar pedido</button>
+            <input type="hidden" name="colonia" id="colonia">
+            <input type="hidden" name="ciudad" id="ciudad">
+            <input type="hidden" name="estado" id="estado">
+            <input type="hidden" name="codigo_postal" id="codigoPostal">
         </form>
 
         <section>
@@ -228,13 +246,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 draggable: true,
             });
 
-            function actualizarCampos(posicion) {
-                const lat = posicion.lat();
-                const lng = posicion.lng();
-                document.getElementById('latitud').value = lat;
-                document.getElementById('longitud').value = lng;
-                inputDireccion.value = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
-            }
+function actualizarCampos(posicion) {
+    const lat = posicion.lat();
+    const lng = posicion.lng();
+    document.getElementById('latitud').value = lat;
+    document.getElementById('longitud').value = lng;
+
+    const geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ location: { lat, lng } }, (results, status) => {
+        if (status === 'OK' && results[0]) {
+            const components = results[0].address_components;
+
+            // Helpers para extraer componentes
+            const get = (type) => components.find(c => c.types.includes(type))?.long_name ?? '';
+            const getShort = (type) => components.find(c => c.types.includes(type))?.short_name ?? '';
+
+            const calle   = get('route') || get('street_address');
+            const numero  = get('street_number');
+            const colonia = get('sublocality_level_1') || get('neighborhood');
+            const ciudad  = get('locality') || get('administrative_area_level_2');
+            const estado  = get('administrative_area_level_1');
+            const cp      = get('postal_code');
+
+            inputDireccion.value = [calle, numero].filter(Boolean).join(' ') || results[0].formatted_address;
+            document.getElementById('colonia').value      = colonia;
+            document.getElementById('ciudad').value       = ciudad;
+            document.getElementById('estado').value       = estado;
+            document.getElementById('codigoPostal').value = cp;
+        } else {
+            // Fallback si no hay resultado
+            inputDireccion.value = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+        }
+    });
+}
 
             actualizarCampos(marcador.getPosition());
 
@@ -249,6 +293,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         window.initMap = initMap;
+
+        const firebaseConfig = {
+    apiKey: "AIzaSyBv-v4-himeBF5cR4qmEsZBQPtIkfDjMxc",
+    projectId: "sistemarenta-489401",
+    messagingSenderId: "326104073981",
+    appId: "1:326104073981:web:b51f8437c6be2c5770e094"
+};
+
+firebase.initializeApp(firebaseConfig);
+const messaging = firebase.messaging();
+
+messaging.getToken({ vapidKey: "BNAgJn-pdcpZP4tuWwGt37iPsoQOLW5JmwAnVnj03RjS6wSRjuROM_yCDYfXDcjeEPxDWGqTYAR_pXAJDFF6oHQ" }).then((token) => {
+    document.getElementById('fcmDeviceToken').value = token;
+}).catch((err) => {
+    console.warn('No se pudo obtener token FCM:', err);
+});
     </script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=<?= htmlspecialchars($googleMapsApiKey) ?>&callback=initMap"></script>
 

@@ -1,10 +1,5 @@
 <?php
-/**
- * Controlador para integración con Firebase Cloud Messaging (HTTP v1).
- *
- * Endpoint:
- * POST https://fcm.googleapis.com/v1/projects/{project_id}/messages:send
- */
+
 
 class FcmHandler
 {
@@ -15,11 +10,43 @@ class FcmHandler
         $config = require __DIR__ . '/../config/google_apis.php';
         $this->config = $config['fcm'] ?? [];
     }
+private function getAccessToken(): string
+{
+    $credentialsPath = $this->config['credentials_path'] ?? '';
+    $credentials = json_decode(file_get_contents($credentialsPath), true);
 
+    $now = time();
+    $header = rtrim(strtr(base64_encode(json_encode(['alg' => 'RS256', 'typ' => 'JWT'])), '+/', '-_'), '=');
+    $payload = rtrim(strtr(base64_encode(json_encode([
+        'iss' => $credentials['client_email'],
+        'scope' => 'https://www.googleapis.com/auth/firebase.messaging',
+        'aud' => 'https://oauth2.googleapis.com/token',
+        'iat' => $now,
+        'exp' => $now + 3600
+    ])), '+/', '-_'), '=');
+
+    $data = "$header.$payload";
+    openssl_sign($data, $signature, $credentials['private_key'], 'SHA256');
+    $jwt = "$data." . rtrim(strtr(base64_encode($signature), '+/', '-_'), '=');
+
+    $ch = curl_init('https://oauth2.googleapis.com/token');
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST => true,
+        CURLOPT_POSTFIELDS => http_build_query([
+            'grant_type' => 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+            'assertion' => $jwt
+        ])
+    ]);
+    $response = json_decode(curl_exec($ch), true);
+    curl_close($ch);
+
+    return $response['access_token'] ?? '';
+}
     public function enviarNotificacionPedido(?string $deviceToken, array $pedidoData): array
     {
         $projectId = $this->config['project_id'] ?? '';
-        $accessToken = $this->config['access_token'] ?? '';
+        $accessToken = $this->getAccessToken();
 
         if (!$this->esValorConfigurado($projectId) || !$this->esValorConfigurado($accessToken)) {
             return [

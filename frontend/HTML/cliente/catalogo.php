@@ -131,7 +131,7 @@ unset($_SESSION['mensaje_carrito']);
     </div>
 
 <script>
-// helper to show quantity prompt and prevent submission if invalid
+
 const clienteAutenticado = <?= $clienteAutenticado ? 'true' : 'false' ?>;
 
 function capturarCantidad(event, idProducto, stockDisponible) {

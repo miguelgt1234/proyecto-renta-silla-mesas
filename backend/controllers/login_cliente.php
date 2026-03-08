@@ -30,10 +30,8 @@ try {
         'telefono' => $cliente['telefono']
     ];
 
-    // redirect back to return URL if provided, otherwise to catalogo
     $returnUrl = isset($_POST['return']) ? trim($_POST['return']) : '';
     if ($returnUrl !== '') {
-        // basic safety: only allow internal paths
         if (strpos($returnUrl, '/proyecto-renta-silla-mesas/') === 0) {
             header('Location: ' . $returnUrl);
             exit;
