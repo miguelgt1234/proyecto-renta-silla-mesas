@@ -30,7 +30,7 @@ $pedidos = $stmtPedidos->fetchAll(PDO::FETCH_ASSOC);
           <button onclick="location.href='../../../backend/controllers/catalago.php'">Catálogo</button>
         <button onclick="location.href='carrito.php'">Carrito</button>
         <button disabled>Mis pedidos</button>
-        <button onclick="location.href='perfil.html'">Perfil</button>
+        <button onclick="location.href='perfil.php'">Perfil</button>
     </div>
 
     <div id="tablaPedidos">

@@ -61,7 +61,7 @@ unset($_SESSION['mensaje_carrito']);
             <button id="btnCatalogo" disabled>Catálogo</button>
             <button id="btnCarrito" onclick="location.href='/proyecto-renta-silla-mesas/frontend/HTML/cliente/carrito.php'">Carrito</button>
             <button id="btnMisPedidos" onclick="location.href='/proyecto-renta-silla-mesas/frontend/HTML/cliente/pedido.php'">Mis Pedidos</button>
-            <button id="btnPerfil" onclick="location.href='/proyecto-renta-silla-mesas/frontend/HTML/cliente/perfil.html'">Perfil</button>
+            <button id="btnPerfil" onclick="location.href='/proyecto-renta-silla-mesas/frontend/HTML/cliente/perfil.php'">Perfil</button>
             <?php if (usuario_autenticado()): ?>
                 <button onclick="location.href='/proyecto-renta-silla-mesas/backend/controllers/logout.php'">Cerrar sesión</button>
             <?php else: ?>

@@ -75,7 +75,7 @@ if (!empty($carrito)) {
           <button onclick="location.href='../../../backend/controllers/catalago.php'">Catálogo</button>
             <button disabled>Carrito</button>
             <button onclick="location.href='/proyecto-renta-silla-mesas/frontend/HTML/cliente/pedido.php'">Mis pedidos</button>
-            <button onclick="location.href='/proyecto-renta-silla-mesas/frontend/HTML/cliente/perfil.html'">Perfil</button>
+            <button onclick="location.href='/proyecto-renta-silla-mesas/frontend/HTML/cliente/perfil.php'">Perfil</button>
         </div>
 
         <div id="listaCarrito">

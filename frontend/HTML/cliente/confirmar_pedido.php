@@ -182,7 +182,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button onclick="location.href='catalogo.php'">Catálogo</button>
             <button onclick="location.href='carrito.php'">Carrito</button>
             <button onclick="location.href='pedido.php'">Mis pedidos</button>
-            <button onclick="location.href='perfil.html'">Perfil</button>
+            <button onclick="location.href='perfil.php'">Perfil</button>
         </div>
 
         <?php if ($error): ?><p><?= htmlspecialchars($error) ?></p><?php endif; ?>
